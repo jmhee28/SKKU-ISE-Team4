@@ -28,4 +28,30 @@ const parsing = async(keyword) => {
     console.log(notices);
 }
 
+// const getIcampusHTML = async(keyword) => {
+//     try{
+//         return await axios.get("https://canvas.skku.edu/"+encodeURI(keyword))
+//     }catch(err){
+//         console.log(err);
+//     }
+// }
+
+// const icampusParsing = async(keyword) => {
+//     const html = await getIcampusHTML(keyword);
+//     const $ = cheerio.load(html.data);
+//     const $subjectlist = $(".ic-DashboardCard__box")
+//     // console.log(html)
+//     let subjects = [];
+//     $subjectlist.each((idx,node) =>{
+//         const sub = $(node).find(".loginBtn").text();
+//         console.log(sub);
+//         subjects.push({
+//             subject: $(node).find(".ic-DashboardCard__header-title ellipsis").text().trim()
+//         })
+//     });
+    
+//     console.log(notices);
+// }
+
+// icampusParsing("");
 parsing("장학");
