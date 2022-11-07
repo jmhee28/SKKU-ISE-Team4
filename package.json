@@ -1,0 +1,19 @@
+{
+  "name": "nodecrawling",
+  "version": "1.0.0",
+  "description": "",
+  "main": "crawling.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.4",
+    "cheerio": "^1.0.0-rc.12",
+    "express": "^4.18.2",
+    "iconv-lite": "^0.6.3",
+    "puppeteer": "^19.2.2",
+    "request": "^2.88.2"
+  }
+}
