@@ -23,19 +23,19 @@ async function crawl(){
   // });
 
   //페이지로 가라
-  await page.goto('http://portal.ndhs.or.kr/index');
+  await page.goto('https://icampus.skku.edu/xn-sso/login.php?auto_login=true&sso_only=true&cvs_lgn=&return_url=https%3A%2F%2Ficampus.skku.edu%2Fxn-sso%2Fgw-cb.php%3Ffrom%3Dweb_redirect%26login_type%3Dstandalone%26return_url%3Dhttps%253A%252F%252Ficampus.skku.edu%252Flogin%252Fcallback');
 
   //해당 페이지에 특정 html 태그를 클릭해라
-  await page.click('body > div > div > div > div > div > div.row > div > div.login-body > div > div.col-xs-12.col-sm-5.login-con.pt20 > div > form > ul > li:nth-child(2)');
+  await page.click('#login_wrapper > form > div > div');
   
   //아이디랑 비밀번호 란에 값을 넣어라
   await page.evaluate((id, pw) => {
-  document.querySelector('#stuUserId').value = id;
-  document.querySelector('#stuPassword').value = pw;
+  document.querySelector('#userid').value = id;
+  document.querySelector('#password').value = pw;
   }, ndhs_id, ndhs_pw);
 
   //로그인 버튼을 클릭해라
-  await page.click('#student > div > div:nth-child(2) > button');
+  await page.click('#btnLoginBtn');
 
   //로그인 화면이 전환될 때까지 기다려라, headless: false 일때는 필요 반대로 headless: true일때는 없어야 되는 코드
   //await page.waitForNavigation()
