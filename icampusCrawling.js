@@ -13,8 +13,8 @@ async function crawl(){
   // 가상 브라우져를 실행, headless: false를 주면 벌어지는 일을 새로운 창을 열어 보여준다(default: true)
   const browser = await puppeteer.launch({headless: false});
   const page = await browser.newPage();
-  const ndhs_id = 'palabear1'; // 추후 로그인 폼에서 각자의 아이디 비밀번호를 입력받게 할 예정
-  const ndhs_pw = 'knh200300!';
+  const ndhs_id = ''; // 추후 로그인 폼에서 각자의 아이디 비밀번호를 입력받게 할 예정
+  const ndhs_pw = '';
 
   // headless: false일때 브라우져 크기 지정해주는 코드
   await page.setViewport({
