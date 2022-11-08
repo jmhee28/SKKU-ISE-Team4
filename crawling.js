@@ -54,4 +54,4 @@ const parsing = async(keyword) => {
 // }
 
 // icampusParsing("");
-parsing("");
+parsing("장학");
