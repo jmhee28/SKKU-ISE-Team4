@@ -9,6 +9,14 @@ const getHTML = async(keyword) => {
     }
 }
 
+const getHTML2 = async(keyword) => {
+    try{
+        return await axios.get("https://www.skku.edu/skku/campus/skk_comm/notice01.do"+encodeURI(keyword))
+    }catch(err){
+        console.log(err);
+    }
+}
+
 const parsing = async(keyword) => {
     const html = await getHTML(keyword);
     const $ = cheerio.load(html.data);
@@ -16,18 +24,37 @@ const parsing = async(keyword) => {
 
     let notices = [];
     $noticelist.each((idx,node) =>{
-        const title = $(node).find(".board-list-content-title > a").text();
+        // const title = $(node).find(".board-list-content-title > a").text();
         // console.log(title.trim());
+        // const link = $(node).find(".board-list-content-title > a").attr("href")
+        // const html2 = getHTML2(link);
+        // const $ = cheerio.load(html2.data)
+        // const content = $(pre).text()
+        // console.log(content)
+
+        const link = $(node).find(".board-list-content-title > a").attr("href")
+        content = getContents(link)
+        console.log(content)
+        
         notices.push({
             title:$(node).find(".board-list-content-title > a").text().trim(),
-            link:$(node).find(".board-list-content-title > a").attr("href"),
+            link:"https://www.skku.edu/skku/campus/skk_comm/notice01.do"+$(node).find(".board-list-content-title > a").attr("href"),
             date:$(node).find(".board-list-content-info > ul > li:eq(2)").text().trim()
+            // contents: cheerio.load(getHTML("https://www.skku.edu/skku/campus/skk_comm/notice01.do"+$(node).find(".board-list-content-title > a").attr("href")).data)
         })
     });
     
     console.log(notices);
+    // console.log(html2);
 }
 
+const getContents= async(link) =>{
+    const html = await getHTML2(link);
+    const $ = cheerio.load(html.data);
+    const content = $("ul li")
+    return content
+
+}
 // const getIcampusHTML = async(keyword) => {
 //     try{
 //         return await axios.get("https://canvas.skku.edu/"+encodeURI(keyword))
