@@ -1,4 +1,3 @@
-const axios = require('axios');
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
 const {id,passwd} = require('./Password.js');
@@ -45,39 +44,64 @@ async function crawl(){
       // 현재 페이지의 html정보를 로드
       const content = await page.content();
       const $ = cheerio.load(content);
-      const $courselist = $("#DashboardCard_Container > div");
+      const $courselist = $("#DashboardCard_Container > div> div");
       
       // console.log($courselist);
       let courses = [];
 
       //const $courselist = $("#nav-tray-portal > span > span > div > div > div > div > div > ul:nth-child(3)").attr("li");
-      console.log($courselist);      
+      //console.log($courselist);
+      
+      //#DashboardCard_Container > div > div:nth-child(1) > div > a
+
 
       $courselist.each((idx,node) =>{
-        const courses = $(node).find("a.ic-DashboardCard__action.assignments").attr("href");
-        console.log(courses);
+        const course = $(node).find("div:nth-child("+(idx+1)+") > div > a").attr("href");
+        
+        
+        courses.push('https://canvas.skku.edu' + course +'/assignments')
         // notices.push({
         //     title:$(node).find(".board-list-content-title > a").text().trim(),
         //     link:$(node).find(".board-list-content-title > a").attr("href"),
         //     date:$(node).find(".board-list-content-info > ul > li:eq(2)").text().trim()
         // })
     });
+    console.log(courses);
+
+    for (var hw_link of courses){
+      // const res = await page.goto(hw_link)
+      // console.log(res)
+      if (1){
+        await page.goto(hw_link)
+        const content2 = await page.content();
+        const $ = cheerio.load(content2);
+
+        const $todolist = $('div.assignment-list');
+        console.log("------------------------------------------")
+        // console.log($todolist);
+        console.log("------------------------------------------")
+        $todolist.each((idx,node) =>{
+            console.log($(node).find("div > div.ig-info > a").text().trim());
+            // #assignment_1264126 > div > div.ig-info > a
+          // courses.push('https://canvas.skku.edu' + course)
+          // notices.push({
+          //     title:$(node).find(".board-list-content-title > a").text().trim(),
+          //     link:$(node).find(".board-list-content-title > a").attr("href"),
+          //     date:$(node).find(".board-list-content-info > ul > li:eq(2)").text().trim()
+          // })
+          });
+
+      } 
+      else {
+
+        console.log("no assigment page")
+
+      }
+
+    }
+
     
-    //console.log(notices);
-
-      //#DashboardCard_Container > div > div:nth-child(1) > div > a
-      
-      /*const lists = $("body > div.container-fluid > div:nth-child(6) > div > table > tbody > tr");
-      lists.each((index, list) => {
-          MealList[index] = {
-              date: $(list).find("th").text().replace('\n\t\t\t\t\t\t\t\t',""),
-              breakfast:$(list).find("td:nth-of-type(1)").text(),
-              lunch:$(list).find("td:nth-of-type(2)").text(),
-              dinner:$(list).find("td:nth-of-type(3)").text()
-          }
-          console.log(MealList[index]); 
-
-      })*/
+  
   }
   //로그인 실패시
   else{

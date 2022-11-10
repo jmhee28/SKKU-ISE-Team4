@@ -121,3 +121,7 @@ dist
 package-lock.json
 
 Password.js
+
+token.json
+
+credentials.json

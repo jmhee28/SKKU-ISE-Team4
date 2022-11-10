@@ -34,7 +34,7 @@ const contentsParsing = async(i, list, keyword) => {
 
 
 const parsing = async(keyword) => {
-    console.log("parsing!!!!!!!!!!!");
+    // console.log("parsing!!!!!!!!!!!");
     const html = await getHTML(keyword);
     const $ = cheerio.load(html.data);
     const $noticelist = $(".board-list-content-wrap ");
