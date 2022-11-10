@@ -17,68 +17,47 @@ const getHTML2 = async(keyword) => {
     }
 }
 
+const contentsParsing = async(i, list, keyword) => {
+    console.log("순서: ",i);
+    const html = await getHTML2(keyword);
+    const $ = cheerio.load(html.data);
+    const $noticeContents = $(".pre");
+
+    let contents =[]
+    $noticeContents.each((idx,n) =>{
+        console.log(i)
+        list[i]["content"] = $(n).text().trim();
+    });
+    console.log(list);
+
+}
+
+
 const parsing = async(keyword) => {
+    console.log("parsing!!!!!!!!!!!");
     const html = await getHTML(keyword);
     const $ = cheerio.load(html.data);
-    const $noticelist = $(".board-list-content-wrap ")
+    const $noticelist = $(".board-list-content-wrap ");
 
     let notices = [];
     $noticelist.each((idx,node) =>{
-        // const title = $(node).find(".board-list-content-title > a").text();
-        // console.log(title.trim());
-        // const link = $(node).find(".board-list-content-title > a").attr("href")
-        // const html2 = getHTML2(link);
-        // const $ = cheerio.load(html2.data)
-        // const content = $(pre).text()
-        // console.log(content)
-
-        const link = $(node).find(".board-list-content-title > a").attr("href")
-        content = getContents(link)
-        console.log(content)
-        
+        // contentsParsing($(node).find(".board-list-content-title > a").attr("href"))
         notices.push({
             title:$(node).find(".board-list-content-title > a").text().trim(),
             link:"https://www.skku.edu/skku/campus/skk_comm/notice01.do"+$(node).find(".board-list-content-title > a").attr("href"),
             date:$(node).find(".board-list-content-info > ul > li:eq(2)").text().trim()
-            // contents: cheerio.load(getHTML("https://www.skku.edu/skku/campus/skk_comm/notice01.do"+$(node).find(".board-list-content-title > a").attr("href")).data)
         })
+
+        contentsParsing(idx, notices, $(node).find(".board-list-content-title > a").attr("href"))
+
     });
     
-    console.log(notices);
-    // console.log(html2);
+    // console.log(keyword, notices);
 }
 
-const getContents= async(link) =>{
-    const html = await getHTML2(link);
-    const $ = cheerio.load(html.data);
-    const content = $("ul li")
-    return content
-
+// var keyword_list = ["장학", "취업", "학사"]
+var keyword_list = ["장학"]
+for(var i=0;i<keyword_list.length;i++){
+    parsing(keyword_list[i]);
 }
-// const getIcampusHTML = async(keyword) => {
-//     try{
-//         return await axios.get("https://canvas.skku.edu/"+encodeURI(keyword))
-//     }catch(err){
-//         console.log(err);
-//     }
-// }
-
-// const icampusParsing = async(keyword) => {
-//     const html = await getIcampusHTML(keyword);
-//     const $ = cheerio.load(html.data);
-//     const $subjectlist = $(".ic-DashboardCard__box")
-//     // console.log(html)
-//     let subjects = [];
-//     $subjectlist.each((idx,node) =>{
-//         const sub = $(node).find(".loginBtn").text();
-//         console.log(sub);
-//         subjects.push({
-//             subject: $(node).find(".ic-DashboardCard__header-title ellipsis").text().trim()
-//         })
-//     });
-    
-//     console.log(notices);
-// }
-
-// icampusParsing("");
-parsing("장학");
+// parsing("장학")
