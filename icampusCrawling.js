@@ -1,20 +1,14 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
-
-let MealList = {
-  "date": "",
-  "breakfast": "",
-  "lunch": "",
-  "dinner": "", 
-};
+const {id,passwd} = require('./Password.js');
 
 async function crawl(){
   // 가상 브라우져를 실행, headless: false를 주면 벌어지는 일을 새로운 창을 열어 보여준다(default: true)
   const browser = await puppeteer.launch({headless: false});
   const page = await browser.newPage();
-  const ndhs_id = ''; // 추후 로그인 폼에서 각자의 아이디 비밀번호를 입력받게 할 예정
-  const ndhs_pw = '';
+  const ndhs_id = id; // 추후 로그인 폼에서 각자의 아이디 비밀번호를 입력받게 할 예정
+  const ndhs_pw = passwd;
 
   // headless: false일때 브라우져 크기 지정해주는 코드
   await page.setViewport({
@@ -47,16 +41,21 @@ async function crawl(){
       //학사 페이지로 가서
       await page.goto('https://canvas.skku.edu/');
       
+      
       // 현재 페이지의 html정보를 로드
       const content = await page.content();
       const $ = cheerio.load(content);
-      const $courselist = $("#nav-tray-portal > span > span > div > div > div > div > div > ul:nth-child(3)")
-      console.log($courselist);
+      const $courselist = $("#DashboardCard_Container > div");
+      
+      // console.log($courselist);
       let courses = [];
 
+      //const $courselist = $("#nav-tray-portal > span > span > div > div > div > div > div > ul:nth-child(3)").attr("li");
+      console.log($courselist);      
+
       $courselist.each((idx,node) =>{
-        const title = $(node).find("#nav-tray-portal > span > span > div > div > div > div > div > ul:nth-child(3) > li:nth-child("+ idx +") > a").text();
-         console.log(title.trim());
+        const courses = $(node).find("a.ic-DashboardCard__action.assignments").attr("href");
+        console.log(courses);
         // notices.push({
         //     title:$(node).find(".board-list-content-title > a").text().trim(),
         //     link:$(node).find(".board-list-content-title > a").attr("href"),
