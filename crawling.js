@@ -60,4 +60,4 @@ var keyword_list = ["장학"]
 for(var i=0;i<keyword_list.length;i++){
     parsing(keyword_list[i]);
 }
-// parsing("장학")
+// parsing("장학")  

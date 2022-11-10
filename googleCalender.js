@@ -70,7 +70,7 @@ async function authorize() {
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
 
-async function addEvents(auth) {
+async function addEvents(auth) { 
   const calendar = google.calendar({version: 'v3', auth});
   const event = {
       'summary': '과목이름2',
