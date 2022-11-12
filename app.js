@@ -18,8 +18,8 @@ app.get("/register",function(req,res){
 });
 
 app.post("/calendar",(req,res) => {       
-    console.log(req.body.user.name);
     console.log(req.body.user.email);
+    console.log(req.body.user.password);
     res.render("calendar")
 })
 
