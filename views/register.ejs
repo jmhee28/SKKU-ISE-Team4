@@ -55,7 +55,7 @@
             </div>
             <div class="col-md-6 mb-3">
               <label for="student_id">학번</label>
-              <input type="student_id" class="form-control" id="nickname" placeholder="" value="" required>
+              <input type="student_id" class="form-control" id="stuid" placeholder="" value="" required>
               <div class="invalid-feedback">
                 학번을 입력해주세요.
               </div>
@@ -64,14 +64,14 @@
           <div class="row">
             <div class="col-md-6">
               <label for="name">이메일</label>
-              <input type="name" class="form-control" id="email" placeholder="" value="" required>
+              <input type="email" class="form-control" id="email" placeholder="" value="" required>
               <div class="invalid-feedback">
                 이메일을 입력해주세요.
               </div>
             </div>
             <div class="col-md-6 mb-3">
               <label for="student_id">전화번호</label>
-              <input type="student_id" class="form-control" id="phonenumbeer" placeholder="" value="" required>
+              <input type="phone" class="form-control" id="phone" placeholder="" value="" required>
               <div class="invalid-feedback">
                 전화번호를 입력해주세요.
               </div>
@@ -80,7 +80,7 @@
 
           <div class="mb-3">
             <label for="skku_account">성균관대학교 계정</label>
-            <input type="skku_account" class="form-control" id="email" placeholder="" required>
+            <input type="skku_account" class="form-control" id="skku_account" placeholder="" required>
             <div class="invalid-feedback">
               성균관대학교 계정을 입력해주세요.
             </div>
@@ -88,7 +88,7 @@
 
           <div class="mb-3">
             <label for="skku_password">비밀번호</label>
-            <input type="password" class="form-control" id="address" placeholder="" required>
+            <input type="skkupw" class="form-control" id="skkupw" placeholder="" required>
             <div class="invalid-feedback">
               성균관대학교 계정 비밀번호를 입력해주세요.
             </div>
@@ -96,7 +96,7 @@
 
           <div class="mb-3">
             <label for="g_account">구글 계정</label>
-            <input type="g_account" class="form-control" id="address2" placeholder="" required>
+            <input type="g_account" class="form-control" id="g_account" placeholder="" required>
             <div class="invalid-feedback">
               구글 계정을 입력해주세요.
             </div>
@@ -104,7 +104,7 @@
 
           <div class="mb-3">
             <label for="g_password">구글 비밀번호</label>
-            <input type="password" class="form-control" id="address2" placeholder="" required>
+            <input type="googlepw" class="form-control" id="googlepw" placeholder="" required>
             <div class="invalid-feedback">
               구글 비밀번호를 입력해주세요.
             </div>
@@ -123,22 +123,74 @@
     </div>
 
   </div>
-  <script>
-    window.addEventListener('load', () => {
-      const forms = document.getElementsByClassName('validation-form');
+  <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore-compat.js"></script>
+  <script type="module">
+// Import the functions you need from the SDKs you need
+/*console.log("1111");
+import { initializeApp } from "firebase/app";
+console.log("1111");
+import { getAnalytics } from "firebase/analytics";
+console.log("1111");
+import { getFirestore } from "firebase/firestore";
+console.log("aaaa");*/
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-      Array.prototype.filter.call(forms, (form) => {
-        form.addEventListener('submit', function (event) {
-          if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-          }
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAEGuIFzQ6MHzVBiq6Q0IgEypC_GwM4eEA",
+  authDomain: "ise-team4.firebaseapp.com",
+  projectId: "ise-team4",
+  storageBucket: "ise-team4.appspot.com",
+  messagingSenderId: "526463390715",
+  appId: "1:526463390715:web:8dbf9d0a817049fe89715e",
+  measurementId: "G-BT0FWC8KQV"
+};
 
-          form.classList.add('was-validated');
-        }, false);
-      });
-    }, false);
-  </script>
+// Initialize Firebase
+const app = firebase.initializeApp(firebaseConfig);
+const db = app.firestore();
+db.settings({ timestampsInSnaphots:true});
+
+var name,stuid,email,phone,skkuid,skkupw,googleid,googlepw;
+console.log("aaaaa");
+window.addEventListener('load', () => {
+  const forms = document.getElementsByClassName('validation-form');
+   Array.prototype.filter.call(forms, (form) => {
+    form.addEventListener('submit', function (event) {
+      if (form.checkValidity() === false) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      else{
+        name = document.getElementById('name').value;
+        stuid = document.getElementById('stuid').value;
+        email = document.getElementById('email').value;
+        phone = document.getElementById('phone').value;
+        skkuid = document.getElementById('skku_account').value;
+        skkupw = document.getElementById('skkupw').value;
+        googleid = document.getElementById('g_account').value;
+        googlepw = document.getElementById('googlepw').value;
+
+        db.collection('accounts').add({
+          name: name,
+          stuid: stuid,
+          email: email,
+          phone: phone,
+          skkuid: skkuid,
+          skkupw: skkupw,
+          googleid: googleid,
+          googlepw: googlepw
+        });
+      }
+      console.log("aaaaa");
+      form.classList.add('was-validated');
+   }, false);
+  });
+}, false);
+</script>
 </body>
 
 </html>
