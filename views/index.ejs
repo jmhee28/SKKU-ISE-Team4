@@ -130,19 +130,16 @@
     </button>
   </main>
 </body>
-<script >
-  import bcrypt from "bcrypt";
+
+<script>
+  //const bcrypt = require('bcrypt');
   async function click_sign_in() {
     console.log("click!");
-    /*
-      1. 유저한테 받아온 password와 id로 makePasswordHashed 함수 사용해서 암호화 진행
-      2. 암호화된 비밀번호로 DB에 계정있나 확인 후 로그인
-    */
+
     let email_input = document.getElementById("floatingInput").value;
     let password_input = document.getElementById("floatingPassword").value;
-    password_input = await bcrypt.hash(password_input, 10);
+    //password_input = await bcrypt.hash(password_input, 10);
 
-    // const EncryptPassword = await hash.makePasswordHashed(email_input, password_input);
     // DB에 계정이 있으면 ture로 설정, 없으면 false
     // false일 경우 로그인 실패 Alert 띄우기
     let login_success = true
@@ -162,5 +159,4 @@
     location.href = '/calendar'
   }   
 </script>
-
 </html>
