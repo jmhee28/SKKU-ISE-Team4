@@ -3,6 +3,7 @@
 # 로그인 db
 ## 중복되는 아캠id는 회원가입을 하지 못하게 설정 따로 alert 필요
 ## firestore db 확인위해서 권한 설정 필요 => 김성수한테 이메일 보내주세요
+## 로그인은 아캠 계정으로 진행되게 설정
 
 # Node.js server
  1. npm install
