@@ -17,9 +17,8 @@ app.get("/register",function(req,res){
     res.render("register")
 });
 
-app.post("/calendar",(req,res) => {       
-    console.log(req.body.user.email);
-    console.log(req.body.user.password);
+app.post("/calendar",(req,res) => {
+    console.log(req.body);
     res.render("calendar")
 })
 
