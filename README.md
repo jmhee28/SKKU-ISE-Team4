@@ -24,7 +24,7 @@
 로그인 사용하실라면 Password.js 만드시구
 ```
 const id = '아캠아이디입력';
-const passwd = '패스워드입력';
+const passwd = '아캠패스워드입력';
 
 module.exports={
     id,
