@@ -125,7 +125,8 @@
   </div>
   <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore-compat.js"></script>
-  <script type="module">
+  <script>
+    const bcrypt = require('bcrypt');
     // Import the functions you need from the SDKs you need
     /*console.log("1111");
     import { initializeApp } from "firebase/app";
@@ -152,8 +153,6 @@
     // Initialize Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const db = app.firestore();
-    //암호화를 위한 hash 함수 가지고옴
-    const hash = require("./Encryption");
     db.settings({ timestampsInSnaphots: true });
 
     var name, stuid, email, phone, skkuid, skkupw, googleid, googlepw;
@@ -166,6 +165,8 @@
           if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
+            const { a, b } = await createHashedPassword("test");
+            print(a,b)
           }
           else {
             name = document.getElementById('name').value;
@@ -177,7 +178,7 @@
             googleid = document.getElementById('g_account').value;
             googlepw = document.getElementById('googlepw').value;
             // skkupw에 대해서 암호화 실행 
-            const { encrypt_password, salt } = await hash.createHashedPassword(skkupw);
+            skkupw = await bcrypt.hash(skkupw, 10);
 
             // encrypt_password와 salt를 저장해야한다.
             db.collection('accounts').add({

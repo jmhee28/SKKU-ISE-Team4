@@ -1,14 +1,9 @@
-const hash = require("./Encryption")
+import bcrypt from "bcrypt";
 
-async function test() {
+async function test(password) {
     
-    userId = "testID";
-    userPassword = "testPassword";
-
-    const { password, salt } = await hash.createHashedPassword(userPassword);
-    const certified_password = await hash.makePasswordHashed(salt, userPassword);
-    console.log(password)
-    return password
+    const uglyPassword = await bcrypt.hash(password, 10);
+    console.log(uglyPassword)
 }
 
-console.log(test("test"));
+test("test");
