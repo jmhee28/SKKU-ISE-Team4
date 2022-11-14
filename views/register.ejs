@@ -127,13 +127,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore-compat.js"></script>
   <script type="module">
 // Import the functions you need from the SDKs you need
-/*console.log("1111");
-import { initializeApp } from "firebase/app";
-console.log("1111");
-import { getAnalytics } from "firebase/analytics";
-console.log("1111");
-import { getFirestore } from "firebase/firestore";
-console.log("aaaa");*/
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -154,8 +147,16 @@ const app = firebase.initializeApp(firebaseConfig);
 const db = app.firestore();
 db.settings({ timestampsInSnaphots:true});
 
-var name,stuid,email,phone,skkuid,skkupw,googleid,googlepw;
-console.log("aaaaa");
+db.collection('accounts').add({
+  name: ""
+})
+db.collection('accounts').where('name',"==",'').get().then(function(snapshot){
+  snapshot.forEach(function(doc){
+    doc.ref.delete();
+  })
+});
+var naming,stuid,email,phone,skkuid,skkupw,googleid,googlepw;
+
 window.addEventListener('load', () => {
   const forms = document.getElementsByClassName('validation-form');
    Array.prototype.filter.call(forms, (form) => {
@@ -165,7 +166,7 @@ window.addEventListener('load', () => {
         event.stopPropagation();
       }
       else{
-        name = document.getElementById('name').value;
+        naming = document.getElementById('name').value;
         stuid = document.getElementById('stuid').value;
         email = document.getElementById('email').value;
         phone = document.getElementById('phone').value;
@@ -175,7 +176,7 @@ window.addEventListener('load', () => {
         googlepw = document.getElementById('googlepw').value;
 
         db.collection('accounts').add({
-          name: name,
+          name: naming,
           stuid: stuid,
           email: email,
           phone: phone,
@@ -183,9 +184,8 @@ window.addEventListener('load', () => {
           skkupw: skkupw,
           googleid: googleid,
           googlepw: googlepw
-        });
+        })
       }
-      console.log("aaaaa");
       form.classList.add('was-validated');
    }, false);
   });
