@@ -125,72 +125,79 @@
   </div>
   <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore-compat.js"></script>
-  <script type="module">
-// Import the functions you need from the SDKs you need
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+  <script>
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAEGuIFzQ6MHzVBiq6Q0IgEypC_GwM4eEA",
-  authDomain: "ise-team4.firebaseapp.com",
-  projectId: "ise-team4",
-  storageBucket: "ise-team4.appspot.com",
-  messagingSenderId: "526463390715",
-  appId: "1:526463390715:web:8dbf9d0a817049fe89715e",
-  measurementId: "G-BT0FWC8KQV"
-};
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyAEGuIFzQ6MHzVBiq6Q0IgEypC_GwM4eEA",
+      authDomain: "ise-team4.firebaseapp.com",
+      projectId: "ise-team4",
+      storageBucket: "ise-team4.appspot.com",
+      messagingSenderId: "526463390715",
+      appId: "1:526463390715:web:8dbf9d0a817049fe89715e",
+      measurementId: "G-BT0FWC8KQV"
+    };
 
-// Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const db = app.firestore();
-db.settings({ timestampsInSnaphots:true});
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = app.firestore();
+    db.settings({ timestampsInSnaphots: true });
 
-db.collection('accounts').add({
-  name: ""
-})
-db.collection('accounts').where('name',"==",'').get().then(function(snapshot){
-  snapshot.forEach(function(doc){
-    doc.ref.delete();
-  })
-});
-var naming,stuid,email,phone,skkuid,skkupw,googleid,googlepw;
+    db.collection('accounts').add({
+      name: ""
+    })
+    db.collection('accounts').where('name',"==",'').get().then(function(snapshot){
+      snapshot.forEach(function(doc){
+      doc.ref.delete();
+      })
+    });
 
-window.addEventListener('load', () => {
-  const forms = document.getElementsByClassName('validation-form');
-   Array.prototype.filter.call(forms, (form) => {
-    form.addEventListener('submit', function (event) {
-      if (form.checkValidity() === false) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-      else{
-        naming = document.getElementById('name').value;
-        stuid = document.getElementById('stuid').value;
-        email = document.getElementById('email').value;
-        phone = document.getElementById('phone').value;
-        skkuid = document.getElementById('skku_account').value;
-        skkupw = document.getElementById('skkupw').value;
-        googleid = document.getElementById('g_account').value;
-        googlepw = document.getElementById('googlepw').value;
+    var naming, stuid, email, phone, skkuid, skkupw, googleid, googlepw;
+    console.log("aaaaa");
+    window.addEventListener('load', () => {
 
-        db.collection('accounts').add({
-          name: naming,
-          stuid: stuid,
-          email: email,
-          phone: phone,
-          skkuid: skkuid,
-          skkupw: skkupw,
-          googleid: googleid,
-          googlepw: googlepw
-        })
-      }
-      form.classList.add('was-validated');
-   }, false);
-  });
-}, false);
-</script>
+      const forms = document.getElementsByClassName('validation-form');
+      Array.prototype.filter.call(forms, (form) => {
+        form.addEventListener('submit', async function (event) {
+          if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+            const { a, b } = await createHashedPassword("test");
+            print(a,b)
+          }
+          else {
+            naming = document.getElementById('name').value;
+            stuid = document.getElementById('stuid').value;
+            email = document.getElementById('email').value;
+            phone = document.getElementById('phone').value;
+            skkuid = document.getElementById('skku_account').value;
+            skkupw = document.getElementById('skkupw').value;
+            googleid = document.getElementById('g_account').value;
+            googlepw = document.getElementById('googlepw').value;
+            // skkupw에 대해서 암호화 실행 
+            //skkupw = await bcrypt.hash(skkupw, 10);
+
+            // encrypt_password와 salt를 저장해야한다.
+            db.collection('accounts').add({
+              name: naming,
+              stuid: stuid,
+              email: email,
+              phone: phone,
+              skkuid: skkuid,
+              skkupw: skkupw,
+              googleid: googleid,
+              googlepw: googlepw
+            });
+          }
+          console.log("aaaaa");
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  </script>
 </body>
 
 </html>
