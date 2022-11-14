@@ -20,10 +20,9 @@ module.exports = function (app, fs) {
     });
     
     app.post("/login",(req,res) => {    
-        email = req.body.user.email  // 구글캘린더 불러올 때 필요   
-        console.log(req.body.user.success)
-        if(req.body.user.success)
-            res.render("calendar")
+        email = req.body.email  // 구글캘린더 불러올 때 필요   
+        console.log(req.body)
+        res.render("calendar")
     })
 
 }

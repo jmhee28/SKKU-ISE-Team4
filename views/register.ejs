@@ -162,38 +162,44 @@
       const forms = document.getElementsByClassName('validation-form');
       Array.prototype.filter.call(forms, (form) => {
         form.addEventListener('submit', async function (event) {
-          if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-            const { a, b } = await createHashedPassword("test");
-            print(a,b)
-          }
-          else {
-            naming = document.getElementById('name').value;
-            stuid = document.getElementById('stuid').value;
-            email = document.getElementById('email').value;
-            phone = document.getElementById('phone').value;
-            skkuid = document.getElementById('skku_account').value;
-            skkupw = document.getElementById('skkupw').value;
-            googleid = document.getElementById('g_account').value;
-            googlepw = document.getElementById('googlepw').value;
-            // skkupw에 대해서 암호화 실행 
-            //skkupw = await bcrypt.hash(skkupw, 10);
+          db.collection('accounts').where('skkuid',"==",document.getElementById('skku_account').value).get().then((snapshot)=>{
+            if(!snapshot.empty){//중복 skkuid가 없을때 alert필요
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            else if (form.checkValidity() === false) {//형식에 안맞을때 alert필요
+              event.preventDefault();
+              event.stopPropagation();
+              /*const { a, b } = await createHashedPassword("test");
+              print(a,b)*/
+            }
+            else {
+              naming = document.getElementById('name').value;
+              stuid = document.getElementById('stuid').value;
+              email = document.getElementById('email').value;
+              phone = document.getElementById('phone').value;
+              skkuid = document.getElementById('skku_account').value;
+              skkupw = document.getElementById('skkupw').value;
+              googleid = document.getElementById('g_account').value;
+              googlepw = document.getElementById('googlepw').value;
+              // skkupw에 대해서 암호화 실행 
+              //skkupw = await bcrypt.hash(skkupw, 10);
 
-            // encrypt_password와 salt를 저장해야한다.
-            db.collection('accounts').add({
-              name: naming,
-              stuid: stuid,
-              email: email,
-              phone: phone,
-              skkuid: skkuid,
-              skkupw: skkupw,
-              googleid: googleid,
-              googlepw: googlepw
-            });
-          }
-          console.log("aaaaa");
-          form.classList.add('was-validated');
+              // encrypt_password와 salt를 저장해야한다.
+              db.collection('accounts').add({
+                name: naming,
+                stuid: stuid,
+                email: email,
+                phone: phone,
+                skkuid: skkuid,
+                skkupw: skkupw,
+                googleid: googleid,
+                googlepw: googlepw
+              });
+            }
+            console.log("aaaaa");
+            form.classList.add('was-validated');
+          })
         }, false);
       });
     }, false);

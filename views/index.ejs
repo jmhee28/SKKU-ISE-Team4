@@ -172,13 +172,11 @@
 
     // DB에 계정이 있으면 ture로 설정, 없으면 false
     // false일 경우 로그인 실패 Alert 띄우기
-    let login_success = true
     //db에서 id pw 일치하는지 확인하기
     await db.collection('accounts').where('skkuid',"==",skkuid_input).where('skkupw','==',password_input).get().then((snapshot)=>{
         if(!snapshot.empty){//로그인 성공,db에 존재함
-            login_success = true
             const context = snapshot.docs[0].data();
-            fetch("/calendar", {
+            fetch("/login", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
