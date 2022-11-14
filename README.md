@@ -1,5 +1,11 @@
 # SKKU-ISE-Team4
 
+# Node.js server
+ 1. npm install
+ 2. npm start로 실행
+ 3. 아이캠퍼스 계정으로 로그인 하면 자신의 구글캘린더 나오게 설정
+ 4. 암호화는 require문제로 아직 적용 못함
+
 # Google Calender 연동
 ## 현재 DB에서 데이터 가져와서 보낼수 있는 함수 구현했음, googleCalender.js에 DB형식 있습니다. 
 ## google 캘린더 googleCalender.js 처음실행시, credentials.json 필요하고 token.js생성되실 겁니다.  
