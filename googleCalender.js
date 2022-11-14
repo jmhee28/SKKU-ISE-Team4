@@ -94,7 +94,6 @@ async function addEvents(auth) {
         console.log('There was an error contacting the Calendar service: ' + err);
         return;
       }
-      console.log('Event created: %s', event.htmlLink);
     });
 }
 
