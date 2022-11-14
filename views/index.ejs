@@ -138,8 +138,8 @@
       </form>
       <button
       class="w-100 btn btn-lg btn-primary"
-      onclick="click_sign_in(); go_to_sign_in();"    
-      style = "margin-bottom: 5px;"      
+      style = "margin-bottom: 5px;"
+      id="submit"      
     >
       Sign in
     </button>
@@ -151,24 +151,60 @@
       </button>
     </main>
   </body>
-  <script>
+  <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore-compat.js"></script>
+  <script type="module">
+        // Import the functions you need from the SDKs you need
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyAEGuIFzQ6MHzVBiq6Q0IgEypC_GwM4eEA",
+      authDomain: "ise-team4.firebaseapp.com",
+      projectId: "ise-team4",
+      storageBucket: "ise-team4.appspot.com",
+      messagingSenderId: "526463390715",
+      appId: "1:526463390715:web:8dbf9d0a817049fe89715e",
+      measurementId: "G-BT0FWC8KQV"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = app.firestore();
+    db.settings({ timestampsInSnaphots:true});
+
+    db.collection('accounts').add({
+      name: ""
+    })
+    db.collection('accounts').where('name',"==",'').get().then(function(snapshot){
+      snapshot.forEach(function(doc){
+        doc.ref.delete();
+      })
+    });
+
     function go_to_sign_in() {
       console.log("go to sign in")
       location.href = "/calendar"
     }
-    async function click_sign_in() {      
-      await fetch("/calendar", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user: {
-            email: "test@example.com",
-            password: "test_password",
-          },
-        }),
-      });          
-    }   
+    async function click_sign_in() {
+      await db.collection('accounts').where('skkuid',"==",document.getElementById('floatingInput').value).where('skkupw','==',document.getElementById('floatingPassword').value).get().then((snapshot)=>{
+        if(!snapshot.empty){
+            const context = snapshot.docs[0].data();
+            fetch("/calendar", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(context),
+            });
+            go_to_sign_in();
+        }
+      })  
+    }
+    document.getElementById('submit').addEventListener('click',function(){
+      click_sign_in();
+    })
   </script>
 </html>
