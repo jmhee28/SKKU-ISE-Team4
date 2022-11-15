@@ -1,3 +1,4 @@
+
 const axios = require('axios');
 const cheerio = require('cheerio');
 
@@ -55,9 +56,13 @@ const parsing = async(keyword) => {
     // console.log(keyword, notices);
 }
 
-// var keyword_list = ["장학", "취업", "학사"]
-var keyword_list = ["장학"]
+var keyword_list = ["장학", "취업", "학사"]
+
 for(var i=0;i<keyword_list.length;i++){
     parsing(keyword_list[i]);
 }
 // parsing("장학")
+
+module.exports = {
+    parsing
+}
