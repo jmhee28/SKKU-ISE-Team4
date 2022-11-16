@@ -1,4 +1,5 @@
-import {parsing} from '../crawling.js'
+
+const { parsing } = require("../crawling")
 
 module.exports = function (app, fs) {
     let email = "waniboyy"
@@ -23,16 +24,14 @@ module.exports = function (app, fs) {
         res.render("calendar")
     });
 
-
     app.get("/register", function (req, res) {
         console.log("post calendar")
         res.render("register")
     });
     
     app.post("/login",(req,res) => {  
-          
         email = req.body.email  // 구글캘린더 불러올 때 필요   
-        console.log(req.body)
+        //console.log(req.body)
         res.render("calendar")
     })
 
