@@ -12,8 +12,18 @@ const m = function (app, fs) {
     })
     app.get("/calendar", function (req, res) {
         console.log("get calendar");
+       
         for(var i=0;i<keywords.length;i++){
-            parsing(keywords[i]);
+            let parse_result = parsing(keywords[i]);
+            parse_result.then(response => {
+                // content = response
+                // console.log(content);
+                console.log(response);
+            })
+            .catch(error => {
+                console.log('error')
+                console.log(error)
+            })
         }
         res.render("calendar",{ email: email, keywords: keywords});
     });
