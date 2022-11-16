@@ -5,6 +5,7 @@ import session from 'express-session'
 import fs from "fs"
 import path from 'path';
 import {m} from './router/main.js';
+
 const __dirname = path.resolve();
 const app = express();
 
