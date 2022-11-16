@@ -1,6 +1,6 @@
 
-const axios = require('axios');
-const cheerio = require('cheerio');
+import axios from "axios"
+import cheerio from "cheerio"
 
 const getHTML = async(keyword) => {
     try{
@@ -63,6 +63,4 @@ for(var i=0;i<keyword_list.length;i++){
 }
 // parsing("장학")
 
-module.exports = {
-    parsing
-}
+export { parsing }

@@ -1,13 +1,16 @@
-const express = require("express");
+import express from 'express';
+import ejs from "ejs"
+import bodyParser from 'body-parser'
+import session from 'express-session'
+import fs from "fs"
+import path from 'path';
+import {m} from './router/main.js';
+const __dirname = path.resolve();
 const app = express();
-const ejs = require("ejs");
-const bodyParser = require('body-parser');
-const session = require('express-session');
-const fs = require("fs")
 
 app.set('views', __dirname + '/views');
 app.set("view engine", "ejs");
-app.engine('html', require('ejs').renderFile);
+app.engine('html', ejs.renderFile);
 
 const server = app.listen(3000, () => {
     console.log("server is running on localhost:3000");
@@ -26,4 +29,4 @@ app.use(session({
 }));
 
 
-const router = require('./router/main')(app, fs);
+const router = m(app, fs);

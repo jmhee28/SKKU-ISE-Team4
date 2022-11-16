@@ -1,5 +1,6 @@
-const cheerio = require('cheerio');
-const puppeteer = require('puppeteer');
+import cheerio from "cheerio"
+import puppeteer from "puppeteer"
+/// import로 바꿔줘야 한다.
 const {id,passwd} = require('./Password.js');
 
 async function crawl(){
@@ -93,9 +94,7 @@ async function crawl(){
 
       } 
       else {
-
         console.log("no assigment page")
-
       }
 
     }

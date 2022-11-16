@@ -1,8 +1,7 @@
+import { parsing } from "../crawling.js"
 
-const { parsing } = require("../crawling")
-
-module.exports = function (app, fs) {
-    let email = "waniboyy"
+const m = function (app, fs) {
+    let email = "email"
     let keywords =  ["장학", "취업", "학사"];
 
     app.get("/", function (req, res) {
@@ -25,7 +24,7 @@ module.exports = function (app, fs) {
     });
 
     app.get("/register", function (req, res) {
-        console.log("post calendar")
+        console.log("get register")
         res.render("register")
     });
     
@@ -35,4 +34,17 @@ module.exports = function (app, fs) {
         res.render("calendar")
     })
 
+    app.get("/hash",(req,res) => {  
+        console.log("get hash")
+        return res.status(200).json({ keywords: "keywords" });
+    })
+
+    app.post("/hash",(req,res) => {  
+        test = req.body   
+        console.log("hash post : ",test)
+        return res.status(200).json({ keywords: "keywords" });
+    })
+
 }
+
+export { m }

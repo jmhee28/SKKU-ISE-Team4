@@ -1,5 +1,10 @@
-/*
 const crypto = require('crypto');
+const bcrypt = require("bcrypt");
+
+const createhash = async function(password){
+    let newhashpassword = await bcrypt.hash(password, 10)
+    return newhashpassword 
+} 
 
 const createSalt = async () =>
     new Promise((resolve, reject) => {
@@ -42,5 +47,4 @@ const makePasswordHashed = (userId, plainPassword) =>
 
 exports.makePasswordHashed = makePasswordHashed
 exports.createHashedPassword = createHashedPassword
-
-*/
+module.exports = {createhash}
