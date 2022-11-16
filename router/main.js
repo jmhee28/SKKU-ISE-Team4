@@ -13,7 +13,7 @@ const m = function (app, fs) {
     app.get("/calendar", function (req, res) {
         console.log("get calendar");
         for(var i=0;i<keywords.length;i++){
-            parsing(keywords);
+            parsing(keywords[i]);
         }
         res.render("calendar",{ email: email, keywords: keywords});
     });

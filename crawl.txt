@@ -1,0 +1,52 @@
+장학 [
+  {
+    title: '[인공지능혁신공유대학사업단] 마이크로디그리 설명회 개최 안내(학부생 누구나 가능, 11월 22일)',
+    link: 'https://www.skku.edu/skku/campus/skk_comm/notice01.do?mode=view&articleNo=101716&article.offset=0&articleLimit=10&srSearchVal=%EC%9E%A5%ED%95%99',
+    date: '2022-11-16'
+  },
+  {
+    title: '2022학년도 겨울 학사과정 계절수업 운영 안내',
+    link: 'https://www.skku.edu/skku/campus/skk_comm/notice01.do?mode=view&articleNo=101460&article.offset=0&articleLimit=10&srSearchVal=%EC%9E%A5%ED%95%99',
+    date: '2022-11-16'
+  },
+  {
+    title: '(수정) 선후배가 함께하는 자기주도형 글로벌 학습 체험 (SKKU-BA-DIVE)',
+    link: 'https://www.skku.edu/skku/campus/skk_comm/notice01.do?mode=view&articleNo=101505&article.offset=0&articleLimit=10&srSearchVal=%EC%9E%A5%ED%95%99',
+    date: '2022-11-16'
+  },
+  {
+    title: '[교육개발센터] 2022학년도 겨울방학 "성균공부방" 9기 Teacher 모집',
+    link: 'https://www.skku.edu/skku/campus/skk_comm/notice01.do?mode=view&articleNo=101542&article.offset=0&articleLimit=10&srSearchVal=%EC%9E%A5%ED%95%99',
+    date: '2022-11-16'
+  },
+  {
+    title: '2022 외국인유학생 한국어온라인 스피치대회 개최 안내입니다',
+    link: 'https://www.skku.edu/skku/campus/skk_comm/notice01.do?mode=view&articleNo=101016&article.offset=0&articleLimit=10&srSearchVal=%EC%9E%A5%ED%95%99',
+    date: '2022-11-14'
+  },
+  {
+    title: '2022학년도 한국산림복지진흥원 녹색장학사업 학업장학금 장학생 2차 모집 안내',
+    link: 'https://www.skku.edu/skku/campus/skk_comm/notice01.do?mode=view&articleNo=101697&article.offset=0&articleLimit=10&srSearchVal=%EC%9E%A5%ED%95%99',
+    date: '2022-11-14'
+  },
+  {
+    title: '2023학년도 KC미래장학금 제6기 장학생 모집 안내',
+    link: 'https://www.skku.edu/skku/campus/skk_comm/notice01.do?mode=view&articleNo=101690&article.offset=0&articleLimit=10&srSearchVal=%EC%9E%A5%ED%95%99',
+    date: '2022-11-14'
+  },
+  {
+    title: '2023학년도 관정이종환교육재단 국내대학(학부생) 장학생 모집 안내',
+    link: 'https://www.skku.edu/skku/campus/skk_comm/notice01.do?mode=view&articleNo=101693&article.offset=0&articleLimit=10&srSearchVal=%EC%9E%A5%ED%95%99',
+    date: '2022-11-14'
+  },
+  {
+    title: '2023학년도 한국고등교육재단 제 2기 문우림 장학생 선발 안내',
+    link: 'https://www.skku.edu/skku/campus/skk_comm/notice01.do?mode=view&articleNo=101689&article.offset=0&articleLimit=10&srSearchVal=%EC%9E%A5%ED%95%99',
+    date: '2022-11-14'
+  },
+  {
+    title: '2022학년도 2학기 소청장학재단 장학생 모집 안내',
+    link: 'https://www.skku.edu/skku/campus/skk_comm/notice01.do?mode=view&articleNo=101647&article.offset=0&articleLimit=10&srSearchVal=%EC%9E%A5%ED%95%99',
+    date: '2022-11-11'
+  }
+]
