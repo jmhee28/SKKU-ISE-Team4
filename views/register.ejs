@@ -14,7 +14,6 @@
   <style>
     body {
       min-height: 100vh;
-
       background: -webkit-gradient(linear, left bottom, right top, from(#92b5db), to(#1d466c));
       background: -webkit-linear-gradient(bottom left, #92b5db 0%, #1d466c 100%);
       background: -moz-linear-gradient(bottom left, #92b5db 0%, #1d466c 100%);
@@ -125,6 +124,7 @@
   </div>
   <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore-compat.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/simple-crypto-js@2.5.0/dist/SimpleCrypto.min.js"></script>
   <script>
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
@@ -156,9 +156,8 @@
     });
 
     var naming, stuid, email, phone, skkuid, skkupw, googleid, googlepw;
-    console.log("aaaaa");
-    window.addEventListener('load', () => {
-
+    window.addEventListener('load', async() => {
+      simpleCrypto = new SimpleCrypto("crypto key")
       const forms = document.getElementsByClassName('validation-form');
       Array.prototype.filter.call(forms, (form) => {
         form.addEventListener('submit', async function (event) {
@@ -166,26 +165,28 @@
             if(!snapshot.empty){//중복 skkuid가 없을때 alert필요
               event.preventDefault();
               event.stopPropagation();
+              alert("중복 아이디 있음");
             }
             else if (form.checkValidity() === false) {//형식에 안맞을때 alert필요
               event.preventDefault();
               event.stopPropagation();
-              /*const { a, b } = await createHashedPassword("test");
-              print(a,b)*/
+              alert("형식에 안맞음");
             }
             else {
+              alert("회원가입 성공");
               naming = document.getElementById('name').value;
               stuid = document.getElementById('stuid').value;
               email = document.getElementById('email').value;
               phone = document.getElementById('phone').value;
               skkuid = document.getElementById('skku_account').value;
-              skkupw = document.getElementById('skkupw').value;
               googleid = document.getElementById('g_account').value;
+              skkupw = document.getElementById('skkupw').value;
+              // 성균관대학교 비밀번호 암호화
+              skkupw = simpleCrypto.encrypt(skkupw); 
               googlepw = document.getElementById('googlepw').value;
+              // 구글 비밀번호 암호화
+              googlepw = simpleCrypto.encrypt(googlepw); 
               // skkupw에 대해서 암호화 실행 
-              //skkupw = await bcrypt.hash(skkupw, 10);
-
-              // encrypt_password와 salt를 저장해야한다.
               db.collection('accounts').add({
                 name: naming,
                 stuid: stuid,

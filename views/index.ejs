@@ -132,6 +132,7 @@
 </body>
 <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore-compat.js"></script>
+<script src="//cdn.jsdelivr.net/npm/simple-crypto-js@2.5.0/dist/SimpleCrypto.min.js"></script>
 <script>
   //const bcrypt = require('bcrypt');
     // Import the functions you need from the SDKs you need
@@ -165,17 +166,29 @@
     });
   async function click_sign_in() {
     console.log("click!");
-
+    simpleCrypto = new SimpleCrypto("crypto key")
     let skkuid_input = document.getElementById("floatingInput").value;
     let password_input = document.getElementById("floatingPassword").value;
-    console.log(skkuid_input);
-    //password_input = await bcrypt.hash(password_input, 10);
 
+    let password_match = true
+    //db에서 저장되어 있는 암호화된 비밀번호를 가져와서 복호화 하고 내가 지금 입력한 비밀번호와 대조해본다
+    await db.collection('accounts').where('skkuid',"==",skkuid_input).get().then((snapshot)=>{
+      pw = snapshot.docs[0]._delegate._document.data.value.mapValue.fields.skkupw.stringValue
+      // 암호 복호화
+      if (password_input == simpleCrypto.decrypt(pw))
+      {
+        password_match = true
+      }
+      else 
+      {
+        password_match = false
+      }
+    })
     // DB에 계정이 있으면 ture로 설정, 없으면 false
     // false일 경우 로그인 실패 Alert 띄우기
     //db에서 id pw 일치하는지 확인하기
-    await db.collection('accounts').where('skkuid',"==",skkuid_input).where('skkupw','==',password_input).get().then((snapshot)=>{
-        if(!snapshot.empty){//로그인 성공,db에 존재함
+    await db.collection('accounts').where('skkuid',"==",skkuid_input).get().then((snapshot)=>{
+        if(!snapshot.empty && password_match){//로그인 성공,db에 존재함
             const context = snapshot.docs[0].data();
             fetch("/login", {
               method: "POST",
@@ -187,9 +200,6 @@
             location.href = '/calendar'
         }//else문 추가후 로그인 실패 alert띄우기    
       })
-    document.getElementById('submit').addEventListener('click',function(){
-      click_sign_in();
-    })
   }   
 </script>
 </html>

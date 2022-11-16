@@ -33,18 +33,6 @@ const m = function (app, fs) {
         //console.log(req.body)
         res.render("calendar")
     })
-
-    app.get("/hash",(req,res) => {  
-        console.log("get hash")
-        return res.status(200).json({ keywords: "keywords" });
-    })
-
-    app.post("/hash",(req,res) => {  
-        test = req.body   
-        console.log("hash post : ",test)
-        return res.status(200).json({ keywords: "keywords" });
-    })
-
 }
 
 export { m }
