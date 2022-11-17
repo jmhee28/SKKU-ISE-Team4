@@ -36,10 +36,12 @@ const m = function (app, fs) {
     app.get("/", function (req, res) {      
         res.render("index")
     });
-
+    
+    /*
     app.post("/", function (req, res) {  
         res.render("index")
     });
+    */
 
     app.get("/keywords",async function (req, res) {
         const docsref = collection(db, "accounts");
@@ -48,7 +50,7 @@ const m = function (app, fs) {
         keywords = querySnapshot.docs[0].data().keywords;
         return res.status(200).json({ keywords: keywords });
     });
-    
+
     app.get("/calendar", function (req, res) {
         console.log("get calendar");
         authorize().then(addEvents).catch(console.error);
