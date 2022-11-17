@@ -107,12 +107,17 @@ async function addEvents(auth) {
   // console.log("crawlresult\n" + crawlresult);
   let eventlst = [];
   for (let cr of crawlresult) {
-    for (let cnt of cr.result) {
-      let start = cr.date + 'T09:00:00'
-      let end = cr.date + + 'T10:00:00'
+    for (let cnt of cr.result) {      
+      let start = cnt.date + 'T09:00:00'
+      let end = cnt.date + + 'T10:00:00'
+      // description이 undefined일때는 pass하기
+      if(typeof(cnt.content[0]?.content) == "undefined")
+      {
+        continue;
+      }      
       let evt = {
         'summary': cnt.title,
-        'description': cnt.content,
+        'description': cnt.content[0]?.content, //cnt.content
         'start': {
           'dateTime': start,
           'timeZone': 'Asia/Seoul',
@@ -126,24 +131,26 @@ async function addEvents(auth) {
       // console.log("crawlresult\n" + JSON.stringify(cnt));
     }
   }
-
-  // const event = {
-  //     'summary': '과목이름2',
-  //     'description': '과제이름2',
-  //     'start': {
-  //       'dateTime': '2023-11-28T09:00:00',
-  //       'timeZone': 'Asia/Seoul',
-  //     },
-  //     'end': {
-  //       'dateTime': '2023-11-28T17:00:00',
-  //       'timeZone': 'Asia/Seoul',
-  //     },
-  //   };
+  /*event1이랑 최대한 format 맞춰서 넣으면 될 것 같습니다. */
+  const event1 = {
+      'summary': '과목이름2',
+      'description': '과제이름2',
+      'start': {
+        'dateTime': '2023-11-28T09:00:00',
+        'timeZone': 'Asia/Seoul',
+      },
+      'end': {
+        'dateTime': '2023-11-28T17:00:00',
+        'timeZone': 'Asia/Seoul',
+      },
+    };
+ 
   for (let event of eventlst) {
+    console.log("event : ",event)
     calendar.events.insert({
       auth: auth,
       calendarId: 'primary',
-      resource: event,
+      resource: JSON.stringify(event),
     }, function (err, event) {
       if (err) {
         console.log('There was an error contacting the Calendar service: ' + err);
