@@ -92,7 +92,7 @@
             <span class="pt-1 form-checked-content">
               <span contenteditable="true" class="w-100">Add new keywords</span>
               <input id="keyword" type="text" name="" value="" class="w-50" />
-              <input type="button" name="" value="append" class="w-30" onclick="event.preventDefault();addkeyword()" />
+              <input id="append" type="button" name="" value="append" class="w-30"/>
             </span>
           </label>
         </div>
@@ -158,137 +158,174 @@
 
     let skkuid = "<%= skkuid%>";
     let useremail = "<%= email%>";
-    let initkeys = "<%= keywords %>";
+    initkeys = {};
 
-    initkeys = initkeys.split(',');
-    document.getElementById('key').innerHTML = "";
-    for (let i = 0; i < initkeys.length; i++) {
-      console.log(initkeys[i]);
-      document.getElementById('key').innerHTML += '<label class="list-group-item d-flex gap-3"><span class="pt-1 form-checked-content"><i class="bi bi-dash-circle" onclick="" style="cursor:pointer"></i><strong>  ' + initkeys[i] + '</strong></span><label>';
+    async function get_doc() {
+      return db.collection('accounts').where('skkuid', "==", skkuid).get();
     }
-
-    let emaildomain = ""; //이메일 도메인
-    let emailname = ""; //이메일 앞 부분 이름
-    let frontpart = true;
-
-    for (let i = 0; i < useremail?.length; i++) {
-      if (useremail[i] !== "@" && frontpart) {
-        emailname += useremail[i];
-      } else if (useremail[i] === "@") {
-        frontpart = false;
-      } else if (!frontpart) {
-        emaildomain += useremail[i];
-      }
+    async function get_keyword() {
+      const snapshot = await get_doc();
+      return snapshot.docs[0].data().keywords;
     }
-    let str1 = "https://calendar.google.com/calendar/embed?src=";
-    let str2 = emailname;
-    let str3 = "%40" + emaildomain + "&ctz=Asia%2FSeoul";
-    $("#google_email").attr('src', str1 + str2 + str3);
+    let promise = (async () => {
+      const data = await get_keyword();
+      return data;
+    })();
+    promise.then(function (value) {
+      initkeys = value;
+    }).then(function () {
 
-    var keywords = initkeys;
-    var keylen = initkeys.length;
-    var schedules = new Array(0);
-    var schedulelen = 0;
-
-    function addkeyword() {
-      var newkey = document.getElementById('keyword').value;
-
-      if (newkey !== '') {
-        if (keywords.includes(newkey)) {
-          alert("이미 존재하는 키워드입니다.\nAlready existing keyword.");
-        }
-        else {
-          keylen++;
-          keywords.push(newkey);
-          displaykeyword();
-          document.getElementById('keyword').value = '';
-          db.collection('accounts').where('skkuid', '==', skkuid).get().then((snapshot) => {
-            snapshot.docs[0].ref.update({
-              keywords: keywords
-            })
-          })
-        }
-      }
-    }
-
-    function displaykeyword() {
       document.getElementById('key').innerHTML = "";
-      for (let i = 0; i < keylen; i++) {
-        document.getElementById('key').innerHTML += createkeyword(keywords[i]);
+      for (let i = 0; i < initkeys.length; i++) {
+        console.log(initkeys[i]);
+        document.getElementById('key').innerHTML += '<label class="list-group-item d-flex gap-3"><span class="pt-1 form-checked-content"><i class="bi bi-dash-circle" onclick="" style="cursor:pointer"></i><strong>  ' + initkeys[i] + '</strong></span><label>';
       }
-    }
 
-    function createkeyword(keyword) {
-      return '<label id="' + keyword + '" class="list-group-item d-flex gap-3"><span class="pt-1 form-checked-content"><i class="bi bi-dash-circle" id="' + keyword + '" onclick="event.preventDefault();removekeyword(this.id)" style="cursor:pointer"></i><i class="bi bi-gear" id="' + keyword + '" onclick="event.preventDefault();modifykeyword(this.id)" style="cursor:pointer"></i><strong>  ' + keyword + '</strong></span><label>'
-    }
+      let emaildomain = ""; //이메일 도메인
+      let emailname = ""; //이메일 앞 부분 이름
+      let frontpart = true;
 
-    function removekeyword(keyword) {
-      for (let i = 0; i < keywords.length; i++) {
-        if (keywords[i] === keyword) {
-          keywords.splice(i, 1);
-          keylen--;
-          i--;
-          db.collection('accounts').where('skkuid', '==', skkuid).get().then((snapshot) => {
-            snapshot.docs[0].ref.update({
-              keywords: keywords
+      for (let i = 0; i < useremail?.length; i++) {
+        if (useremail[i] !== "@" && frontpart) {
+          emailname += useremail[i];
+        } else if (useremail[i] === "@") {
+          frontpart = false;
+        } else if (!frontpart) {
+          emaildomain += useremail[i];
+        }
+      }
+      let str1 = "https://calendar.google.com/calendar/embed?src=";
+      let str2 = emailname;
+      let str3 = "%40" + emaildomain + "&ctz=Asia%2FSeoul";
+      $("#google_email").attr('src', str1 + str2 + str3);
+
+      var keywords = initkeys;
+      var keylen = initkeys.length;
+      var schedules = new Array(0);
+      var schedulelen = 0;
+
+      document.getElementById("append").addEventListener("click", function (event) {
+        event.preventDefault();
+        addkeyword();
+      })
+      function addkeyword() {
+        var newkey = document.getElementById('keyword').value;
+
+        if (newkey !== '') {
+          if (keywords.includes(newkey)) {
+            alert("이미 존재하는 키워드입니다.\nAlready existing keyword.");
+          }
+          else {
+            keylen++;
+            keywords.push(newkey);
+            displaykeyword();
+            document.getElementById('keyword').value = '';
+            db.collection('accounts').where('skkuid', '==', skkuid).get().then((snapshot) => {
+              snapshot.docs[0].ref.update({
+                keywords: keywords
+              })
+            })
+          }
+        }
+      }
+
+      function displaykeyword() {
+        document.getElementById('key').innerHTML = "";
+        for (let i = 0; i < keylen; i++) {
+          document.getElementById('key').innerHTML += createkeyword(keywords[i]);
+        }
+        let docs = document.getElementsByName('remove');
+        for (let i = 0; i < docs.length; i++) {
+          docs[i].addEventListener('click', function (event) {
+            event.preventDefault();
+            removekeyword(this.id);
+          })
+        }
+        docs = document.getElementsByName('modify');
+        for (let i = 0; i < docs.length; i++) {
+          docs[i].addEventListener('click', function (event) {
+            event.preventDefault();
+            modifykeyword(this.id);
+            let temp = document.getElementsByName('confirm');
+            temp[0].addEventListener('click',function(event){
+              event.preventDefault();
+              modify(this.id);
             })
           })
         }
       }
-      displaykeyword();
-    }
 
-    function modifykeyword(keyword) {
-      document.getElementById(keyword).innerHTML = '<label class="list-group-item d-flex gap-3 bg-light"><span class="pt-1 form-checked-content"><input id="b' + keyword + '" type="text" name="" value="" class="w-50"><input id="' + keyword + '" type="button" name="" value="modify" class="w-30" onclick="event.preventDefault();modify(this.id)"></span></label>';
-    }
-
-    function modify(keyword) {
-      mkey = document.getElementById('b' + keyword).value;
-      if (mkey !== '') {
-        if (keyword === mkey) {
-          alert('수정 전과 동일한 키워드입니다.\nSame as before.');
-        }
-        else if (keywords.includes(mkey)) {
-          alert('이미 존재하는 키워드입니다.\nAlready existing keyword.');
-        }
-        else {
-          for (let i = 0; i < keylen; i++) {
-            if (keywords[i] === keyword) {
-              keywords[i] = mkey;
-              db.collection('accounts').where('skkuid', '==', skkuid).get().then((snapshot) => {
-                snapshot.docs[0].ref.update({
-                  keywords: keywords
-                })
+      function createkeyword(keyword) {
+        return '<label id="' + keyword + '" class="list-group-item d-flex gap-3"><span class="pt-1 form-checked-content"><i name="remove" class="bi bi-dash-circle" id="' + keyword + '" style="cursor:pointer"></i><i name="modify" class="bi bi-gear" id="' + keyword + '" onclick="" style="cursor:pointer"></i><strong>  ' + keyword + '</strong></span><label>'
+      }
+      function removekeyword(keyword) {
+        for (let i = 0; i < keywords.length; i++) {
+          if (keywords[i] === keyword) {
+            keywords.splice(i, 1);
+            keylen--;
+            i--;
+            db.collection('accounts').where('skkuid', '==', skkuid).get().then((snapshot) => {
+              snapshot.docs[0].ref.update({
+                keywords: keywords
               })
-            }
+            })
           }
-          displaykeyword();
+        }
+        displaykeyword();
+      }
+
+      function modifykeyword(keyword) {
+        document.getElementById(keyword).innerHTML = '<label class="list-group-item d-flex gap-3 bg-light"><span class="pt-1 form-checked-content"><input id="b' + keyword + '" type="text" name="" value="" class="w-50"><input id="' + keyword + '" type="button" name="confirm" value="modify" class="w-30" onclick=""></span></label>';
+      }
+
+      function modify(keyword) {
+        mkey = document.getElementById('b' + keyword).value;
+        if (mkey !== '') {
+          if (keyword === mkey) {
+            alert('수정 전과 동일한 키워드입니다.\nSame as before.');
+          }
+          else if (keywords.includes(mkey)) {
+            alert('이미 존재하는 키워드입니다.\nAlready existing keyword.');
+          }
+          else {
+            for (let i = 0; i < keylen; i++) {
+              if (keywords[i] === keyword) {
+                keywords[i] = mkey;
+                db.collection('accounts').where('skkuid', '==', skkuid).get().then((snapshot) => {
+                  snapshot.docs[0].ref.update({
+                    keywords: keywords
+                  })
+                })
+              }
+            }
+            displaykeyword();
+          }
         }
       }
-    }
 
-    function addschedule() {
-      schedulelen++;
-      var newtitle = document.getElementById('s_title').value;
-      var newdead = document.getElementById('s_dead').value;
-      schedules.push([newtitle, newdead]);
-      console.log(schedules);
-      displayschedule();
-      document.getElementById('s_title').value = "";
-      document.getElementById('s_dead').value = "";
-    }
-
-    function displayschedule() {
-      document.getElementById('schedule').innerHTML = "";
-      for (let i = 0; i < schedulelen; i++) {
-        console.log(schedules[i]);
-        document.getElementById('schedule').innerHTML += createschedule(schedules[i]);
+      function addschedule() {
+        schedulelen++;
+        var newtitle = document.getElementById('s_title').value;
+        var newdead = document.getElementById('s_dead').value;
+        schedules.push([newtitle, newdead]);
+        console.log(schedules);
+        displayschedule();
+        document.getElementById('s_title').value = "";
+        document.getElementById('s_dead').value = "";
       }
-    }
 
-    function createschedule(schedule) {
-      return '<label class="list-group-item d-flex gap-3"><input class="form-check-input flex-shrink-0" type="checkbox" value=""  style="font-size: 1.375em;"><span class="pt-1 form-checked-content"><strong>' + schedule[0] + '</strong><small class="d-block text-muted"><svg class="bi me-1" width="1em" height="1em"><use xlink:href="#calendar-event"/></svg>' + schedule[1] + '</small></span></label>'
-    }
+      function displayschedule() {
+        document.getElementById('schedule').innerHTML = "";
+        for (let i = 0; i < schedulelen; i++) {
+          console.log(schedules[i]);
+          document.getElementById('schedule').innerHTML += createschedule(schedules[i]);
+        }
+      }
+
+      function createschedule(schedule) {
+        return '<label class="list-group-item d-flex gap-3"><input class="form-check-input flex-shrink-0" type="checkbox" value=""  style="font-size: 1.375em;"><span class="pt-1 form-checked-content"><strong>' + schedule[0] + '</strong><small class="d-block text-muted"><svg class="bi me-1" width="1em" height="1em"><use xlink:href="#calendar-event"/></svg>' + schedule[1] + '</small></span></label>'
+      }
+    })
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"

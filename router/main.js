@@ -68,7 +68,6 @@ const m = function (app, fs) {
 
     app.post("/login", (req, res) => {
         email = req.body.googleid  // 구글캘린더 불러올 때 필요   
-        keywords = req.body.keywords
         skkuid = req.body.skkuid
         //console.log(req.body)
         res.render("calendar")
