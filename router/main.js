@@ -3,6 +3,7 @@ import { parsing } from "../crawling.js"
 const m = function (app, fs) {
     let email = "email"
     let keywords =  ["장학", "취업", "학사"];
+    let skkuid = "skkuid"
 
     app.get("/", function (req, res) {
         res.render("index")
@@ -25,7 +26,7 @@ const m = function (app, fs) {
                 console.log(error)
             })
         }
-        res.render("calendar",{ email: email, keywords: keywords});
+        res.render("calendar",{ email: email, keywords: keywords, skkuid: skkuid});
     });
 
     app.post("/calendar", function (req, res) {
@@ -39,7 +40,9 @@ const m = function (app, fs) {
     });
     
     app.post("/login",(req,res) => {  
-        email = req.body.email  // 구글캘린더 불러올 때 필요   
+        email = req.body.googleid  // 구글캘린더 불러올 때 필요   
+        keywords = req.body.keywords
+        skkuid = req.body.skkuid
         //console.log(req.body)
         res.render("calendar")
     })

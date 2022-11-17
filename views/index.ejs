@@ -156,15 +156,7 @@
     const db = app.firestore();
     db.settings({ timestampsInSnaphots:true});
 
-    db.collection('accounts').add({
-      name: ""
-    })
-    db.collection('accounts').where('name',"==",'').get().then(function(snapshot){
-      snapshot.forEach(function(doc){
-        doc.ref.delete();
-      })
-    });
-  async function click_sign_in() {
+    async function click_sign_in() {
     console.log("click!");
     simpleCrypto = new SimpleCrypto("crypto key")
     let skkuid_input = document.getElementById("floatingInput").value;

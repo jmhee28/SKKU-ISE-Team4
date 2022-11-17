@@ -15,6 +15,13 @@ function addkeyword(){
     keywords.push(newkey);
     displaykeyword();
     document.getElementById('keyword').value ='';
+    /*db.collection('accounts').where('skkuid','==',skkuid).get().then((snapshot)=>{
+      let newkeywords = snapshot.docs[0].data().keywords;
+      newkeywords.push(newkey);
+      thing.ref.update({
+        keywords: newkeywords
+      })
+    })*/
     }
   }
 }

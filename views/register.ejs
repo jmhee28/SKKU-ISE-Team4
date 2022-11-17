@@ -146,21 +146,13 @@
     const db = app.firestore();
     db.settings({ timestampsInSnaphots: true });
 
-    db.collection('accounts').add({
-      name: ""
-    })
-    db.collection('accounts').where('name',"==",'').get().then(function(snapshot){
-      snapshot.forEach(function(doc){
-      doc.ref.delete();
-      })
-    });
-
     var naming, stuid, email, phone, skkuid, skkupw, googleid, googlepw;
     window.addEventListener('load', async() => {
       simpleCrypto = new SimpleCrypto("crypto key")
       const forms = document.getElementsByClassName('validation-form');
       Array.prototype.filter.call(forms, (form) => {
         form.addEventListener('submit', async function (event) {
+          event.preventDefault();
           db.collection('accounts').where('skkuid',"==",document.getElementById('skku_account').value).get().then((snapshot)=>{
             if(!snapshot.empty){//중복 skkuid가 없을때 alert필요
               event.preventDefault();
@@ -195,10 +187,10 @@
                 skkuid: skkuid,
                 skkupw: skkupw,
                 googleid: googleid,
-                googlepw: googlepw
+                googlepw: googlepw,
+                keywords: []
               });
             }
-            console.log("aaaaa");
             form.classList.add('was-validated');
           })
         }, false);
