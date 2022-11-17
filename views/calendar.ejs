@@ -192,7 +192,7 @@
 
       let useremail = "<%= email%>";
       console.log(useremail);
-      var initkeys = "<%= keywords %>";
+      let initkeys = "<%= keywords %>";
       initkeys = initkeys.split(',');
       document.getElementById('key').innerHTML = "";
       for(let i=0; i<initkeys.length; i++){
@@ -214,8 +214,8 @@
         }
       }
       let str1 = "https://calendar.google.com/calendar/embed?src=";
-      let str2 = emailname
-      let str3= "%40gmail.com&ctz=Asia%2FSeoul"
+      let str2 = emailname;
+      let str3= "%40"+emaildomain+"&ctz=Asia%2FSeoul";
       $("#google_email").attr('src', str1+str2+str3);
     </script>
     <script
