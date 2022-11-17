@@ -108,8 +108,10 @@ async function addEvents(auth) {
   let eventlst = [];
   for (let cr of crawlresult) {
     for (let cnt of cr.result) {
-      let start = cr.date + 'T09:00:00'
-      let end = cr.date + + 'T10:00:00'
+
+      let start = cnt.date + 'T09:00:00'
+      let end = cnt.date + + 'T10:00:00'
+      console.log(start);
       let evt = {
         'summary': cnt.title,
         'description': cnt.content,
