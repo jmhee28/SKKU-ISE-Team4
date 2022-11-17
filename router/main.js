@@ -1,8 +1,14 @@
 import { parsing } from "../crawling.js"
+import {authorize, addEvents} from "../googleCalender.js"
+let keywords =  ["장학", "취업", "학사"];
+
+async function getCrawled(){
+    let crawlresult =  await parsing(keywords[0]);
+    return crawlresult;
+   }
 
 const m = function (app, fs) {
     let email = "email"
-    let keywords =  ["장학", "취업", "학사"];
     let skkuid = "skkuid"
 
     app.get("/", function (req, res) {
@@ -13,19 +19,14 @@ const m = function (app, fs) {
     })
     app.get("/calendar", function (req, res) {
         console.log("get calendar");
-       
-        for(var i=0;i<keywords.length;i++){
-            let parse_result = parsing(keywords[i]);
-            parse_result.then(response => {
-                // content = response
-                // console.log(content);
-                console.log(response);
-            })
-            .catch(error => {
-                console.log('error')
-                console.log(error)
-            })
-        }
+        authorize().then(addEvents).catch(console.error);
+        let crawlresult = [];
+        // parsing(keywords[0]).then((a)=>{
+        //     crawlresult =  JSON.stringify(a);
+        //     console.log("cr: \n" + crawlresult);
+        //     res.render("calendar",{ email: email, keywords: keywords,  crawlresult: crawlresult});
+        // })
+        
         res.render("calendar",{ email: email, keywords: keywords, skkuid: skkuid});
     });
 
