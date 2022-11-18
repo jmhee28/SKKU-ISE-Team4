@@ -51,7 +51,7 @@ const m = function (app, fs) {
         return res.status(200).json({ keywords: keywords });
     });
 
-    app.get("/calendar", function (req, res) {
+    app.get("/calendar",async function (req, res) {
         console.log("get calendar");
         authorize().then(addEvents).catch(console.error);
         let crawlresult = [];
@@ -60,7 +60,10 @@ const m = function (app, fs) {
         //     console.log("cr: \n" + crawlresult);
         //     res.render("calendar",{ email: email, keywords: keywords,  crawlresult: crawlresult});
         // })
-
+        const docsref = collection(db, "accounts");
+        const q = query(docsref, where("skkuid", "==", skkuid));
+        const querySnapshot = await getDocs(q);
+        keywords = querySnapshot.docs[0].data().keywords;
         res.render("calendar", { email: email, keywords: keywords, skkuid: skkuid });
     });
 
