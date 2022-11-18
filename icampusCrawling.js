@@ -6,7 +6,7 @@ import {id,passwd} from './Password.js';
 import request_client from 'request-promise-native';
 
 
-async function crawl(){
+async function crawl() {
   // 가상 브라우져를 실행, headless: false를 주면 벌어지는 일을 새로운 창을 열어 보여준다(default: true)
   const browser = await puppeteer.launch({headless: true});
   const page = await browser.newPage();
@@ -143,3 +143,5 @@ async function crawl(){
 
 
 crawl();  
+
+export {crawl}

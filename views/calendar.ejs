@@ -157,7 +157,11 @@
 
     let skkuid = "<%= skkuid%>";
     let useremail = "<%= email%>";
+    let coursenames = "<%= coursenames%>"
+  
+    // console.log( JSON.parse(JSON.stringify(coursenames)));
 
+    // coursenames =JSON.parse(JSON.stringify(coursenames));
     if(localStorage.getItem('json') === null){
       let initkeys = "<%= keywords %>";
       initkeys = initkeys.split(',');
@@ -192,6 +196,12 @@
     var keylen = keywords.length;
     var schedules = new Array(0);
     var schedulelen = 0;
+    
+    // 과목이름들
+    coursenames = coursenames.split(',');
+    for(coursename of coursenames){     
+      nschedule(coursename, "");
+    }
 
     window.onload = function() {
       displaykeyword();
@@ -199,6 +209,7 @@
 
     function logout(){
       localStorage.clear();
+      location.href = '/'
     }
 
     function addkeyword() {
