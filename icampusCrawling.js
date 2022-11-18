@@ -1,7 +1,7 @@
 import cheerio from "cheerio"
 import puppeteer from "puppeteer"
 /// import로 바꿔줘야 한다.
-const {id,passwd} = require('./Password.js');
+import {id,passwd} from'./Password.js';
 
 async function crawl(){
   // 가상 브라우져를 실행, headless: false를 주면 벌어지는 일을 새로운 창을 열어 보여준다(default: true)
@@ -47,19 +47,20 @@ async function crawl(){
       const $ = cheerio.load(content);
       const $courselist = $("#DashboardCard_Container > div> div");
       
-      // console.log($courselist);
+      let notices= [];
       let courses = [];
-
+      let coursenames = [];
       //const $courselist = $("#nav-tray-portal > span > span > div > div > div > div > div > ul:nth-child(3)").attr("li");
-      //console.log($courselist);
+      // console.log($courselist[0]);
       
       //#DashboardCard_Container > div > div:nth-child(1) > div > a
 
 
       $courselist.each((idx,node) =>{
+        // console.log(node);
         const course = $(node).find("div:nth-child("+(idx+1)+") > div > a").attr("href");
-        
-        
+        const coursename = $(node).find("div:nth-child("+(idx+1)+") > div > a > div > h3 >span").text();
+        coursenames.push(coursename);
         courses.push('https://canvas.skku.edu' + course +'/assignments')
         // notices.push({
         //     title:$(node).find(".board-list-content-title > a").text().trim(),
@@ -68,6 +69,7 @@ async function crawl(){
         // })
     });
     console.log(courses);
+    console.log(coursenames);
 
     for (var hw_link of courses){
       // const res = await page.goto(hw_link)
