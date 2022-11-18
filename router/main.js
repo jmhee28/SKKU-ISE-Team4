@@ -3,6 +3,7 @@ import { authorize, addEvents } from "../googleCalender.js"
 import { initializeApp } from "firebase/app"
 import { getFirestore } from "firebase/firestore"
 import { collection, getDocs, query, where } from "firebase/firestore"
+import { crawl } from "../icampusCrawling.js"
 
 const firebaseConfig = {
     apiKey: "AIzaSyAEGuIFzQ6MHzVBiq6Q0IgEypC_GwM4eEA",
@@ -54,16 +55,12 @@ const m = function (app, fs) {
         console.log("get calendar");
         authorize().then(addEvents).catch(console.error);
         let crawlresult = [];
-        // parsing(keywords[0]).then((a)=>{
-        //     crawlresult =  JSON.stringify(a);
-        //     console.log("cr: \n" + crawlresult);
-        //     res.render("calendar",{ email: email, keywords: keywords,  crawlresult: crawlresult});
-        // })
         const docsref = collection(db, "accounts");
         const q = query(docsref, where("skkuid", "==", skkuid));
         const querySnapshot = await getDocs(q);
         keywords = querySnapshot.docs[0].data().keywords;
-        res.render("calendar", { email: email, keywords: keywords, skkuid: skkuid });
+        const [courselinks, coursenames] = await crawl()
+        res.render("calendar", { email: email, keywords: keywords, skkuid: skkuid, coursenames, coursenames });
     });
 
     app.post("/calendar", function (req, res) {
