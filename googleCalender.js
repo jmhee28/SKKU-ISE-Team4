@@ -5,6 +5,7 @@ const process = require('process');
 const {authenticate} = require('@google-cloud/local-auth');
 const {google} = require('googleapis');
 */
+import { getkeywords } from "./router/main.js";
 import { parsing } from "./crawling.js"
 import { default as fsWithCallbacks } from 'fs'
 const fs = fsWithCallbacks.promises
@@ -102,6 +103,7 @@ async function getCrawled() {
 
 async function addEvents(auth) {
   const calendar = google.calendar({ version: 'v3', auth });
+  keywords =await getkeywords();
   let crawlresult = await getCrawled();
   crawlresult = crawlresult;
   // console.log("crawlresult\n" + crawlresult);

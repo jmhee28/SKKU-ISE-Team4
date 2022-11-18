@@ -20,6 +20,15 @@ const db = getFirestore(app);
 let keywords = ["장학", "취업", "학사"];
 let email = "email"
 let skkuid = "skkuid"
+async function getkeywords(){
+    console.log("get keywords");
+    const docsref = collection(db, "accounts");
+    const q = query(docsref, where("skkuid", "==", skkuid));
+    const querySnapshot = await getDocs(q);
+    keywords = querySnapshot.docs[0].data().keywords;
+    console.log(keywords);
+    return keywords;
+  }
 
 async function getCrawled() {
     const docsref = collection(db, "accounts");
@@ -85,4 +94,4 @@ const m = function (app, fs) {
     })
 }
 
-export { m }
+export { m, getkeywords }
