@@ -30,16 +30,6 @@ async function getkeywords(){
     return keywords;
   }
 
-async function getCrawled() {
-    const docsref = collection(db, "accounts");
-    const q = query(docsref, where("skkuid", "==", skkuid));
-    const querySnapshot = await getDocs(q);
-    keywords = querySnapshot.docs[0].data().keywords;
-    console.log(keywords);
-    let crawlresult = await parsing(keywords[0]);
-    return crawlresult;
-}
-
 const m = function (app, fs) {
 
     app.get("/", function (req, res) {      

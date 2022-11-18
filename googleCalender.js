@@ -104,6 +104,9 @@ async function getCrawled() {
 async function addEvents(auth) {
   const calendar = google.calendar({ version: 'v3', auth });
   keywords =await getkeywords();
+  if(keywords.length == 0){
+    return;
+  }
   let crawlresult = await getCrawled();
   crawlresult = crawlresult;
   // console.log("crawlresult\n" + crawlresult);
