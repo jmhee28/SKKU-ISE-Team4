@@ -43,7 +43,7 @@ async function crawl() {
 
   //로그인 화면이 전환될 때까지 기다리기, headless: false 일때는 필요 반대로 headless: true일때는 없어야 되는 코드
   await page.waitForNavigation()
-  console.log(page.url());
+  //console.log(page.url());
   //로그인 성공시(화면 전환 성공 시)
   if(page.url() === 'https://icampus.skku.edu/'){
       //학사 페이지로 가서       
