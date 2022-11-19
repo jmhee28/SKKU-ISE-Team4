@@ -8,7 +8,7 @@ import fetch from "node-fetch";
 
 async function crawl() {
   // 가상 브라우져를 실행, headless: false를 주면 벌어지는 일을 새로운 창을 열어 보여준다(default: true)
-  const browser = await puppeteer.launch({headless: false});
+  const browser = await puppeteer.launch({headless: true});
   const page = await browser.newPage();
   const icampus_id = id; // 추후 로그인 폼에서 각자의 아이디 비밀번호를 입력받게 할 예정
   const icampus_pw = passwd;
