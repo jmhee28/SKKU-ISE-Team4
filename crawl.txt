@@ -1,0 +1,20 @@
+{"lecture":
+    [
+    {"course":"2022 Online Education for Human Rights and Prevention of Sexual Violence, Domestic Violence",
+    "title":"01.오프닝(공통)_영문",
+    "due":"2022-12-31T14:59:59Z"},
+    {"course":"2022 Online Education for Human Rights and Prevention of Sexual Violence, Domestic Violence",
+    "title":"02.인권교육(공통)_영문",
+    "due":"2022-12-31T14:59:59Z"},
+    {"course":"2022 Online Education for Human Rights and Prevention of Sexual Violence,
+     Domestic Violence",
+     "title":"03.일상속성평등(공통)_영문",
+     "due":"2022-12-31T14:59:59Z"},
+     {"course":"2022 Online Education for Human Rights and Prevention of Sexual Violence, 
+     Domestic Violence","title":"04.성희롱성폭력(학생용)_영문",
+     "due":"2022-12-31T14:59:59Z"},
+     {"course":"2022 Online Education for Human Rights and Prevention of Sexual Violence,
+      Domestic Violence",
+      "title":"05.가정폭력(공통)_영문",
+      "due":"2022-12-31T14:59:59Z"},
+      {"course":"2022 Online Education for Human Rights and Prevention of Sexual Violence, Domestic Violence","title":"07.클로징(공통)_영문","due":"2022-12-31T14:59:59Z"},{"course":"2022 Online Education for Human Rights and Prevention of Sexual Violence, Domestic Violence","title":"장애인식개선교육_통합교육콘텐츠(저용량)","due":"2022-12-31T14:59:59Z"},{"course":"기술경영개론_ERC2008_41(조근태)","title":"기술경영개론 13주차 강의_Ch11 신제품 개발 프로세스의 관리_온라인 강의","due":"2022-11-25T14:59:59Z"},{"course":"오픈소스소프트웨어실습_SWE2021_41(조재민)","title":"03 - Git Advanced","due":"2022-09-18T14:59:59Z"},{"course":"오픈소스소프트웨어실습_SWE2021_41(조재민)","title":"Lab 04","due":"2022-09-25T14:59:59Z"},{"course":"오픈소스소프트웨어실습_SWE2021_41(조재민)","title":"Lab 11","due":null},{"course":"프로그래밍언어_SWE3006_42(황성재)","title":"Abstract Syntax & Operational Semantics","due":"2022-11-21T14:59:59Z"},{"course":"프로그래밍언어_SWE3006_42(황성재)","title":"Tail Call Optimization","due":"2022-11-21T14:59:59Z"},{"course":"Introduction to Software Engineering_SWE3002_42(차수영)","title":"SWE3002_Lecture0_Overview","due":"2022-09-11T14:59:59Z"},{"course":"Introduction to Software Engineering_SWE3002_42(차수영)","title":"SWE3002_Lecture10_Automatic Program Repair (1)","due":"2022-11-20T14:59:59Z"},{"course":"Introduction to Software Engineering_SWE3002_42(차수영)","title":"SWE3002_Lecture10_Automatic Program Repair (2)","due":"2022-11-20T14:59:59Z"},{"course":"Problem Solving Techniques_SWE2026_41(조재민)","title":"03 - Arrays and Functions","due":"2022-09-18T14:59:59Z"},{"course":"Problem Solving Techniques_SWE2026_41(조재민)","title":"11 - Sorting, Stack, and Queue","due":"2022-11-20T14:59:59Z"},{"course":"Web Programming Lab_SWE3048_43(타메르)","title":"Introduction to HTML","due":"2022-09-14T14:59:59Z"},{"course":"Web Programming Lab_SWE3048_43(타메르)","title":"HTML Multimedia and Inputs","due":"2022-09-18T14:59:59Z"},{"course":"Web Programming Lab_SWE3048_43(타메르)","title":"Backend: Java Server Pages:Part1","due":"2022-11-20T14:59:59Z"},{"course":"Web Programming Lab_SWE3048_43(타메르)","title":"Backend: Java Server Pages:Part2","due":"2022-11-20T14:59:59Z"},{"course":"Web Programming Lab_SWE3048_43(타메르)","title":"#1 How To Create a Website using Html Css Jquery | step by step","due":"2022-11-20T14:59:59Z"}],"assignment":[{"course":"기술경영개론_ERC2008_41(조근태)","title":"기술경영개론 13주차 과제_Ch11 신제품 개발 프로세스의 관리","due":"2022-11-24T14:59:59Z"},{"course":"오픈소스소프트웨어실습_SWE2021_41(조재민)","title":"Project Implementation","due":"2022-12-02T14:55:00Z"},{"course":"오픈소스소프트웨어실습_SWE2021_41(조재민)","title":"Assignment 3 - Todo","due":"2022-12-05T14:55:00Z"},{"course":"컴퓨터개론_SWE2020_41(우홍욱)","title":"Essay 과제","due":"2022-11-26T14:59:59Z"},{"course":"Problem Solving Techniques_SWE2026_41(조재민)","title":"Assignment 3 - esreveR-UKKS","due":"2022-12-09T14:55:00Z"},{"course":"Web Programming Lab_SWE3048_43(타메르)","title":"Assignment 4","due":"2022-11-20T14:59:59Z"},{"course":"Web Programming Lab_SWE3048_43(타메르)","title":"Final Project Proposal","due":"2022-11-23T14:59:59Z"}]}

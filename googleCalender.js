@@ -5,6 +5,7 @@ const process = require('process');
 const {authenticate} = require('@google-cloud/local-auth');
 const {google} = require('googleapis');
 */
+
 import { getkeywords } from "./router/main.js";
 import { parsing } from "./crawling.js"
 import { default as fsWithCallbacks } from 'fs'
@@ -13,6 +14,8 @@ import path from "path"
 import process from "process";
 import { authenticate } from '@google-cloud/local-auth'
 import { google } from 'googleapis'
+import { crawl } from "./icampusCrawling.js"
+
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/calendar'];
 // The file token.json stores the user's access and refresh tokens, and is
@@ -103,27 +106,52 @@ async function getCrawled() {
 
 async function addEvents(auth) {
   const calendar = google.calendar({ version: 'v3', auth });
-  keywords =await getkeywords();
-  
-  if(keywords.length == 0){
-    return;
-  }
-  let crawlresult = await getCrawled();
-  crawlresult = crawlresult;
-  // console.log("crawlresult\n" + crawlresult);
+  keywords = await getkeywords();
+  const thingsToDos = await crawl()
+  let lectures = thingsToDos['lecture'];
+  let assignments = thingsToDos['assignment'];
+  // console.log(lectures);
   let eventlst = [];
-  for (let cr of crawlresult) {
-    for (let cnt of cr.result) {      
-      let start = cnt.date + 'T09:00:00'
-      let end = cnt.date + 'T10:00:00'
-      // description이 undefined일때는 pass하기
-      if(typeof(cnt.content[0]?.content) == "undefined")
-      {
-        continue;
-      }      
+
+  if (keywords.length > 0) {
+    let crawlresult = await getCrawled();
+    crawlresult = crawlresult;
+    for (let cr of crawlresult) {
+      for (let cnt of cr.result) {
+        let start = cnt.date + 'T09:00:00'
+        let end = cnt.date + 'T10:00:00'
+        // description이 undefined일때는 pass하기
+        if (typeof (cnt.content[0]?.content) == "undefined") {
+          continue;
+        }
+        let evt = {
+          'summary': cnt.title,
+          'description': cnt.content[0]?.content,
+          'start': {
+            'dateTime': start,
+            'timeZone': 'Asia/Seoul',
+          },
+          'end': {
+            'dateTime': end,
+            'timeZone': 'Asia/Seoul',
+          },
+        }
+        eventlst.push(evt);
+      }
+    }
+  }
+
+  for(let lecture of lectures){
+    if (lecture.due != null) {
+      //lecture.due :due: '2022-11-20T14:59:59Z'
+      let due = lecture.due.split('T');
+      let duetime = Number(due[1].slice(0, 2)) - 1;
+      let start = due[0] + 'T' + String(duetime) + ":00:00"
+      let end = lecture.due.slice(0, -1);
+
       let evt = {
-        'summary': cnt.title,
-        'description': cnt.content[0]?.content, 
+        'summary': lecture.title,
+        'description': lecture.course,
         'start': {
           'dateTime': start,
           'timeZone': 'Asia/Seoul',
@@ -135,6 +163,31 @@ async function addEvents(auth) {
       }
       eventlst.push(evt);
     }
+    
+  }
+  for(let assignment of assignments){
+    if (assignment.due != null) {
+      //lecture.due :due: '2022-11-20T14:59:59Z'
+      let due = assignment.due.split('T');
+      let duetime = Number(due[1].slice(0, 2)) - 1;
+      let start = due[0] + 'T' + String(duetime) + ":00:00"
+      let end = assignment.due.slice(0, -1);
+
+      let evt = {
+        'summary': assignment.title,
+        'description': assignment.course,
+        'start': {
+          'dateTime': start,
+          'timeZone': 'Asia/Seoul',
+        },
+        'end': {
+          'dateTime': end,
+          'timeZone': 'Asia/Seoul',
+        },
+      }
+      eventlst.push(evt);
+    }
+    
   }
   /*event1이랑 최대한 format 맞춰서 넣으면 될 것 같습니다. */
   // const event1 = {
@@ -150,17 +203,14 @@ async function addEvents(auth) {
   //     },
   //   };
   function sleep(ms) {
-
     return new Promise((resolve) => {
-  
       setTimeout(resolve, ms);
-  
     });
-  
+
   }
 
   for (let event of eventlst) {
-    console.log("event : ",event)
+    console.log("event : ", event)
     await sleep(1000);
     calendar.events.insert({
       auth: auth,
@@ -177,4 +227,4 @@ async function addEvents(auth) {
 
 authorize().then(addEvents).catch(console.error);
 
-export {authorize, addEvents};
+export { authorize, addEvents };

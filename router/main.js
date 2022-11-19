@@ -59,8 +59,11 @@ const m = function (app, fs) {
         const q = query(docsref, where("skkuid", "==", skkuid));
         const querySnapshot = await getDocs(q);
         keywords = querySnapshot.docs[0].data().keywords;
-        const [courselinks, coursenames] = await crawl()
-        res.render("calendar", { email: email, keywords: keywords, skkuid: skkuid, coursenames, coursenames });
+        // const thingsToDos = await crawl()
+        // let lectures = JSON.stringify(thingsToDos['lecture']);
+        // let assignments =JSON.stringify(thingsToDos['assignment']);
+        // res.render("calendar", { email: email, keywords: keywords, skkuid: skkuid, assignments: assignments,lectures:lectures  });
+        res.render("calendar", { email: email, keywords: keywords, skkuid: skkuid });
     });
 
     app.post("/calendar", function (req, res) {

@@ -131,7 +131,8 @@ async function crawl() {
                   }
               }
         }
-        console.log(thingsToDo);//json형식에 lecture 리스트, assignment 리스트 있습니다.
+        // console.log(thingsToDo);//json형식에 lecture 리스트, assignment 리스트 있습니다.
+        return thingsToDo;
       
         
     } else {
