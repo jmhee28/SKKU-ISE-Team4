@@ -210,7 +210,31 @@ async function addEvents(auth) {
     });
 
   }
+  // var today = new Date();
+  // var date = new Date();
+  // date.setMonth(date.getMonth() - 1);
 
+  // const meetingsResponse = await calendar.events.list({
+  //     calendarId: 'primary',
+  //     timeMin: new Date(date.getTime()).toISOString(),
+  //     timeMax: new Date(today.getTime()).toISOString(), 
+  //     singleEvents: true,
+  //     orderBy: 'startTime',
+  //    });
+
+  //    var events = meetingsResponse.items;
+
+  //   if (events.length == 0) {
+  //     console.log('No upcoming events found.');
+  //   } else {
+  //     console.log('Upcoming 10 events:');
+  //     for (var i = 0; i < events.length; i++) {
+  //       var event = events[i];
+  //       var start = event.start.dateTime || event.start.date;
+  //       console.log('%s - %s', start, event.summary);
+  //     }
+  //   }
+    //  console.log(meetingsResponse);
   for (let event of eventlst) {
     console.log("event : ", event)
     await sleep(1000);
