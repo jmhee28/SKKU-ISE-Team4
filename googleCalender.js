@@ -15,6 +15,7 @@ import process from "process";
 import { authenticate } from '@google-cloud/local-auth'
 import { google } from 'googleapis'
 import { crawl } from "./icampusCrawling.js"
+import { async } from "@firebase/util";
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/calendar'];
@@ -105,10 +106,36 @@ async function getCrawled() {
   return crawlresult;
 }
 
+async function listEvents(auth) {
 
+  let summariylst = [];
+  const calendar = google.calendar({ version: 'v3', auth });
+  const res = await calendar.events.list({
+    calendarId: 'primary',
+    timeMin: "2022-11-10T00:19:14.170Z",
+    maxResults: 100,
+    singleEvents: true,
+    orderBy: 'startTime',
+  });
+  const events = res.data.items;
+  if (!events || events.length === 0) {
+    console.log('No upcoming events found.');
+    return summariylst;
+  }
+  console.log('Upcoming 10 events:');
+  events.map((event, i) => {
+    summariylst.push(event.summary);
+    // const start = event.start.dateTime || event.start.date;
+    // console.log(`${start} - ${event.summary}`);
+  });
+  return summariylst
+}
 async function addEvents(auth) {
   const calendar = google.calendar({ version: 'v3', auth });
-  
+
+  let registered = await listEvents(auth)
+  console.log(registered);
+
   const thingsToDos = await crawl()
   let lectures = thingsToDos['lecture'];
   let assignments = thingsToDos['assignment'];
@@ -126,9 +153,37 @@ async function addEvents(auth) {
         if (typeof (cnt.content[0]?.content) == "undefined") {
           continue;
         }
+        if (registered.includes(cnt.title) == false) {
+          let evt = {
+            'summary': cnt.title,
+            'description': cnt.content[0]?.content,
+            'start': {
+              'dateTime': start,
+              'timeZone': 'Asia/Seoul',
+            },
+            'end': {
+              'dateTime': end,
+              'timeZone': 'Asia/Seoul',
+            },
+          }
+          eventlst.push(evt)
+        }
+      }
+    }
+  }
+
+  for (let lecture of lectures) {
+    if (lecture.due != null) {
+      //lecture.due :due: '2022-11-20T14:59:59Z'
+      let due = lecture.due.split('T');
+      let duetime = Number(due[1].slice(0, 2)) - 1;
+      let start = due[0] + 'T' + String(duetime) + ":00:00"
+      let end = lecture.due.slice(0, -1);
+
+      if (registered.includes(lecture.title) == false) {
         let evt = {
-          'summary': cnt.title,
-          'description': cnt.content[0]?.content,
+          'summary': lecture.title,
+          'description': lecture.course,
           'start': {
             'dateTime': start,
             'timeZone': 'Asia/Seoul',
@@ -141,55 +196,32 @@ async function addEvents(auth) {
         eventlst.push(evt);
       }
     }
-  }
 
-  for(let lecture of lectures){
-    if (lecture.due != null) {
-      //lecture.due :due: '2022-11-20T14:59:59Z'
-      let due = lecture.due.split('T');
-      let duetime = Number(due[1].slice(0, 2)) - 1;
-      let start = due[0] + 'T' + String(duetime) + ":00:00"
-      let end = lecture.due.slice(0, -1);
-
-      let evt = {
-        'summary': lecture.title,
-        'description': lecture.course,
-        'start': {
-          'dateTime': start,
-          'timeZone': 'Asia/Seoul',
-        },
-        'end': {
-          'dateTime': end,
-          'timeZone': 'Asia/Seoul',
-        },
-      }
-      eventlst.push(evt);
-    }
-    
   }
-  for(let assignment of assignments){
+  for (let assignment of assignments) {
     if (assignment.due != null) {
       //lecture.due :due: '2022-11-20T14:59:59Z'
       let due = assignment.due.split('T');
       let duetime = Number(due[1].slice(0, 2)) - 1;
       let start = due[0] + 'T' + String(duetime) + ":00:00"
       let end = assignment.due.slice(0, -1);
-
-      let evt = {
-        'summary': assignment.title,
-        'description': assignment.course,
-        'start': {
-          'dateTime': start,
-          'timeZone': 'Asia/Seoul',
-        },
-        'end': {
-          'dateTime': end,
-          'timeZone': 'Asia/Seoul',
-        },
+      if (registered.includes(assignment.title) == false) {
+        let evt = {
+          'summary': assignment.title,
+          'description': assignment.course,
+          'start': {
+            'dateTime': start,
+            'timeZone': 'Asia/Seoul',
+          },
+          'end': {
+            'dateTime': end,
+            'timeZone': 'Asia/Seoul',
+          },
+        }
+        eventlst.push(evt);
       }
-      eventlst.push(evt);
     }
-    
+
   }
   /*event1이랑 최대한 format 맞춰서 넣으면 될 것 같습니다. */
   // const event1 = {
@@ -210,47 +242,31 @@ async function addEvents(auth) {
     });
 
   }
-  // var today = new Date();
-  // var date = new Date();
-  // date.setMonth(date.getMonth() - 1);
 
-  // const meetingsResponse = await calendar.events.list({
-  //     calendarId: 'primary',
-  //     timeMin: new Date(date.getTime()).toISOString(),
-  //     timeMax: new Date(today.getTime()).toISOString(), 
-  //     singleEvents: true,
-  //     orderBy: 'startTime',
-  //    });
-
-  //    var events = meetingsResponse.items;
-
-  //   if (events.length == 0) {
-  //     console.log('No upcoming events found.');
-  //   } else {
-  //     console.log('Upcoming 10 events:');
-  //     for (var i = 0; i < events.length; i++) {
-  //       var event = events[i];
-  //       var start = event.start.dateTime || event.start.date;
-  //       console.log('%s - %s', start, event.summary);
-  //     }
-  //   }
-    //  console.log(meetingsResponse);
-  for (let event of eventlst) {
-    console.log("event : ", event)
-    await sleep(1000);
-    calendar.events.insert({
-      auth: auth,
-      calendarId: 'primary',
-      resource: event,
-    }, function (err, event) {
-      if (err) {
-        console.log('There was an error contacting the Calendar service: ' + err);
-        return;
+    for (let event of eventlst) {
+      if(registered.includes(event.summary) == true)
+      {
+        console.log("include" + event.summary);
+        continue;
       }
-    });
-  }
+      else{
+        console.log("doent include" + event.summary);
+      }
+      // console.log("event : ", event)
+      await sleep(1000);
+      calendar.events.insert({
+        auth: auth,
+        calendarId: 'primary',
+        resource: event,
+      }, function (err, event) {
+        if (err) {
+          console.log('There was an error contacting the Calendar service: ' + err);
+          return;
+        }
+      });
+    }
 }
 
 authorize().then(addEvents).catch(console.error);
 
-export { authorize, addEvents };
+export { authorize, addEvents }
