@@ -53,16 +53,22 @@ const m = function (app, fs) {
 
     app.get("/calendar",async function (req, res) {
         console.log("get calendar");
+        
+        // 공지, 아캠 크롤링한 결과 구글캘린더에 일정추가
         authorize().then(addEvents).catch(console.error);
         let crawlresult = [];
         const docsref = collection(db, "accounts");
         const q = query(docsref, where("skkuid", "==", skkuid));
         const querySnapshot = await getDocs(q);
         keywords = querySnapshot.docs[0].data().keywords;
+        //--- 아캠 크롤릴 결과 json --
         // const thingsToDos = await crawl()
         // let lectures = JSON.stringify(thingsToDos['lecture']);
         // let assignments =JSON.stringify(thingsToDos['assignment']);
         // res.render("calendar", { email: email, keywords: keywords, skkuid: skkuid, assignments: assignments,lectures:lectures  });
+        
+        // -- 공지 크롤릴 결과 json
+        // let crawlresult = await getCrawled();
         res.render("calendar", { email: email, keywords: keywords, skkuid: skkuid });
     });
 

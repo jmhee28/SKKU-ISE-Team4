@@ -88,7 +88,9 @@ async function authorize() {
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
 let keywords = ["장학", "취업", "학사"];
+
 async function getCrawled() {
+  keywords = await getkeywords();
   let crawlresult = [];
   let idx = 0;
   for (let keyword of keywords) {
@@ -106,7 +108,7 @@ async function getCrawled() {
 
 async function addEvents(auth) {
   const calendar = google.calendar({ version: 'v3', auth });
-  keywords = await getkeywords();
+  
   const thingsToDos = await crawl()
   let lectures = thingsToDos['lecture'];
   let assignments = thingsToDos['assignment'];
