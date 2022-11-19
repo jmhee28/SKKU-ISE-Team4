@@ -104,6 +104,7 @@ async function getCrawled() {
 async function addEvents(auth) {
   const calendar = google.calendar({ version: 'v3', auth });
   keywords =await getkeywords();
+  
   if(keywords.length == 0){
     return;
   }

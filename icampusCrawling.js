@@ -4,11 +4,11 @@ import puppeteer from "puppeteer"
 import {id,passwd} from './Password.js';
 
 import request_client from 'request-promise-native';
-
+import fetch from "node-fetch";
 
 async function crawl() {
   // 가상 브라우져를 실행, headless: false를 주면 벌어지는 일을 새로운 창을 열어 보여준다(default: true)
-  const browser = await puppeteer.launch({headless: true});
+  const browser = await puppeteer.launch({headless: false});
   const page = await browser.newPage();
   const icampus_id = id; // 추후 로그인 폼에서 각자의 아이디 비밀번호를 입력받게 할 예정
   const icampus_pw = passwd;
@@ -83,7 +83,7 @@ async function crawl() {
 
         }
 
-        let res = await fetch("https://canvas.skku.edu/learningx/api/v1/courses/"+course_Array[0].id+"/total_learnstatus/users/"+userID,{//인증토큰을 통한 학번조회(api url인자로 필요해서)
+        let res = await fetch("https://canvas.skku.edu/learningx/api/v1/courses/"+course_Array[0].id+"/total_learnstatus/users/"+userID,{
           method: 'GET',
           headers:{ 'Content-Type': 'application/json',
                     "Authorization": authorizationToken,
